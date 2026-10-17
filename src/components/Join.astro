@@ -1,6 +1,7 @@
 ---
 import Icon from './Icon.astro';
 import ParticleField from './ParticleField.astro';
+import { withBase } from '../lib/url';
 ---
 
 <section class="join section" id="join" aria-labelledby="join-title">
@@ -29,11 +30,11 @@ import ParticleField from './ParticleField.astro';
       </p>
 
       <div class="join__actions" data-reveal style="--reveal-delay: .22s">
-        <a class="btn btn--ghost" href="/about/" data-nav-link data-magnetic>
+        <a class="btn btn--ghost" href={withBase('/about/')} data-nav-link data-magnetic>
           <span>了解社团与加入方式</span>
           <span class="btn__dot"><Icon name="arrowUpRight" size={14} /></span>
         </a>
-        <a class="text-link" href="/works/" data-nav-link>
+        <a class="text-link" href={withBase('/works/')} data-nav-link>
           <span class="text-link__line">先看看我们的作品</span>
           <Icon name="arrowRight" size={13} />
         </a>
@@ -82,7 +83,7 @@ import ParticleField from './ParticleField.astro';
     content: "";
     position: absolute;
     inset: 0;
-    background: url("/art/starfield.svg") center / cover no-repeat;
+    background: var(--starfield-url) center / cover no-repeat;
     opacity: 0.36;
   }
 

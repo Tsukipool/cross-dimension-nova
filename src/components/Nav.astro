@@ -1,17 +1,18 @@
 ---
 import Logo from './Logo.astro';
 import Icon from './Icon.astro';
+import { stripBase, withBase } from '../lib/url';
 
-const path = Astro.url.pathname;
+const path = stripBase(Astro.url.pathname);
 const onWorks = path.startsWith('/works');
 const onAbout = path.startsWith('/about');
 const onHome = path === '/';
 
 const links = [
-  { href: '/works/', label: '作品档案', en: 'ARCHIVE', no: '01', active: onWorks },
-  { href: '/about/', label: '关于社团', en: 'ABOUT', no: '02', active: onAbout },
-  { href: '/#cinema', label: '放映室', en: 'SCREENING', no: '03', active: false },
-  { href: '/#join', label: '加入我们', en: 'JOIN', no: '04', active: false },
+  { href: withBase('/works/'), label: '作品档案', en: 'ARCHIVE', no: '01', active: onWorks },
+  { href: withBase('/about/'), label: '关于社团', en: 'ABOUT', no: '02', active: onAbout },
+  { href: withBase('/#cinema'), label: '放映室', en: 'SCREENING', no: '03', active: false },
+  { href: withBase('/#join'), label: '加入我们', en: 'JOIN', no: '04', active: false },
 ];
 ---
 
@@ -34,7 +35,7 @@ const links = [
     </nav>
 
     <div class="site-nav__actions">
-      <a class="site-nav__cta" href="/#join" data-nav-link data-magnetic>
+      <a class="site-nav__cta" href={withBase('/#join')} data-nav-link data-magnetic>
         <span class="site-nav__cta-dot"></span>
         <span>加入我们</span>
         <Icon name="arrowUpRight" size={13} />
@@ -80,13 +81,13 @@ const links = [
 
     <div class="site-menu__visual" aria-hidden="true">
       <div class="site-menu__card site-menu__card--one">
-        <img src="/art/moonlit-tea-party.svg" alt="" loading="lazy" />
+        <img src={withBase('/art/moonlit-tea-party.svg')} alt="" loading="lazy" />
       </div>
       <div class="site-menu__card site-menu__card--two">
-        <img src="/art/stardust-tram.svg" alt="" loading="lazy" />
+        <img src={withBase('/art/stardust-tram.svg')} alt="" loading="lazy" />
       </div>
       <div class="site-menu__card site-menu__card--three">
-        <img src="/art/first-night-screening.svg" alt="" loading="lazy" />
+        <img src={withBase('/art/first-night-screening.svg')} alt="" loading="lazy" />
       </div>
       <p class="site-menu__vertical">まだ見ぬ次元の向こうへ</p>
       <span class="site-menu__star">✦</span>

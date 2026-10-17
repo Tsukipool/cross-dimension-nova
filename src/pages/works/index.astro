@@ -4,6 +4,7 @@ import PageHero from '../../components/PageHero.astro';
 import WorkCard from '../../components/WorkCard.astro';
 import Icon from '../../components/Icon.astro';
 import { getWorks } from '../../lib/works';
+import { withBase } from '../../lib/url';
 
 const works = await getWorks();
 
@@ -84,7 +85,7 @@ const filters = [
           <p class="eyebrow">KEEP EXPLORING / 06</p>
           <p class="archive__outro-title">次元仍在扩张中。</p>
         </div>
-        <a class="selected-all-link" href="/about/" data-nav-link>
+        <a class="selected-all-link" href={withBase('/about/')} data-nav-link>
           <span>认识这个社团</span>
           <span class="selected-all-arrow"><Icon name="arrowUpRight" size={18} /></span>
         </a>

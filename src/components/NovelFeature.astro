@@ -2,6 +2,7 @@
 import type { Work } from '../lib/works';
 import { workHref } from '../lib/works';
 import Icon from './Icon.astro';
+import { withBase } from '../lib/url';
 
 interface Props {
   novel: Work;
@@ -40,7 +41,7 @@ const { novel, secondNovel } = Astro.props;
             <span>阅读短篇</span>
             <span class="btn__dot"><Icon name="arrowUpRight" size={14} /></span>
           </a>
-          <a class="text-link text-link--paper" href="/works/?type=novel" data-nav-link>
+          <a class="text-link text-link--paper" href={withBase('/works/?type=novel')} data-nav-link>
             <span class="text-link__line">全部小说</span>
             <Icon name="arrowRight" size={13} />
           </a>

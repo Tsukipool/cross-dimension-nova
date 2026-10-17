@@ -1,5 +1,6 @@
 ---
 import Icon from './Icon.astro';
+import { withBase } from '../lib/url';
 ---
 
 <section class="about-preview section" id="about" aria-labelledby="about-title">
@@ -13,7 +14,7 @@ import Icon from './Icon.astro';
 
         <figure class="about-preview__card about-preview__card--main">
           <div class="about-preview__card-img">
-            <img src="/art/paper-moon-observatory.svg" alt="纸月亮观测站概念插画" loading="lazy" width="1200" height="1500" />
+            <img src={withBase('/art/paper-moon-observatory.svg')} alt="纸月亮观测站概念插画" loading="lazy" width="1200" height="1500" />
           </div>
           <figcaption>
             <span>SCENE 005 / 纸月亮观测站</span>
@@ -23,7 +24,7 @@ import Icon from './Icon.astro';
 
         <figure class="about-preview__card about-preview__card--small">
           <div class="about-preview__card-img">
-            <img src="/art/deep-sea-post-office.svg" alt="深海邮局概念插画" loading="lazy" width="1650" height="1100" />
+            <img src={withBase('/art/deep-sea-post-office.svg')} alt="深海邮局概念插画" loading="lazy" width="1650" height="1100" />
           </div>
           <figcaption>
             <span>SCENE 004 / 深海邮局</span>
@@ -72,7 +73,7 @@ import Icon from './Icon.astro';
         </ul>
 
         <div class="about-preview__footer" data-reveal>
-          <a class="btn" href="/about/" data-nav-link data-magnetic>
+          <a class="btn" href={withBase('/about/')} data-nav-link data-magnetic>
             <span>认识我们</span>
             <span class="btn__dot"><Icon name="arrowUpRight" size={14} /></span>
           </a>

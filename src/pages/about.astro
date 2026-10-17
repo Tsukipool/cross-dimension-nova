@@ -4,6 +4,7 @@ import PageHero from '../components/PageHero.astro';
 import ParticleField from '../components/ParticleField.astro';
 import Icon from '../components/Icon.astro';
 import { getWorks } from '../lib/works';
+import { withBase } from '../lib/url';
 
 const works = await getWorks();
 const illustration = works.find((work) => work.id === 'stardust-tram');
@@ -248,7 +249,7 @@ const steps = [
 
       <div class="disciplines__grid">
         {illustration && (
-          <a class="discipline" href="/works/?type=illustration" data-nav-link data-cursor-label="View" data-reveal>
+          <a class="discipline" href={withBase('/works/?type=illustration')} data-nav-link data-cursor-label="View" data-reveal>
             <img src={illustration.data.cover} alt="星屑电车概念插画" loading="lazy" width="1200" height="1500" />
             <span class="discipline__shade"></span>
             <span class="discipline__no">N° 01</span>
@@ -262,7 +263,7 @@ const steps = [
         )}
 
         {novel && (
-          <a class="discipline" href="/works/?type=novel" data-nav-link data-cursor-label="Read" data-reveal style="--reveal-delay: .08s">
+          <a class="discipline" href={withBase('/works/?type=novel')} data-nav-link data-cursor-label="Read" data-reveal style="--reveal-delay: .08s">
             <img src={novel.data.cover} alt="短篇小说在世界尽头我们交换心跳封面" loading="lazy" width="1200" height="1800" />
             <span class="discipline__shade"></span>
             <span class="discipline__no">N° 02</span>
@@ -276,7 +277,7 @@ const steps = [
         )}
 
         {video && (
-          <a class="discipline" href="/works/?type=video" data-nav-link data-cursor-label="Play" data-reveal style="--reveal-delay: .16s">
+          <a class="discipline" href={withBase('/works/?type=video')} data-nav-link data-cursor-label="Play" data-reveal style="--reveal-delay: .16s">
             <img src={video.data.cover} alt="星轨概念 PV 视觉海报" loading="lazy" width="1600" height="1000" />
             <span class="discipline__shade"></span>
             <span class="discipline__no">N° 03</span>
@@ -320,11 +321,11 @@ const steps = [
         </div>
 
         <div class="about-join__actions" data-reveal style="--reveal-delay: .26s">
-          <a class="btn" href="/works/" data-nav-link data-magnetic>
+          <a class="btn" href={withBase('/works/')} data-nav-link data-magnetic>
             <span>先看看我们的作品</span>
             <span class="btn__dot"><Icon name="arrowUpRight" size={14} /></span>
           </a>
-          <a class="text-link" href="/" data-nav-link>
+          <a class="text-link" href={withBase('/')} data-nav-link>
             <span class="text-link__line">回到首页</span>
             <Icon name="arrowRight" size={13} />
           </a>
@@ -938,7 +939,7 @@ const steps = [
     content: "";
     position: absolute;
     inset: 0;
-    background: url("/art/starfield.svg") center / cover no-repeat;
+    background: var(--starfield-url) center / cover no-repeat;
     opacity: 0.28;
   }
 

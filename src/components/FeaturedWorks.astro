@@ -2,6 +2,7 @@
 import type { Work } from '../lib/works';
 import WorkCard from './WorkCard.astro';
 import Icon from './Icon.astro';
+import { withBase } from '../lib/url';
 
 interface Props {
   works: Work[];
@@ -56,7 +57,7 @@ const [first, second, third, fourth] = works;
 
     <div class="selected__footer" data-reveal>
       <span class="selected__note">精选 {String(works.length).padStart(2, '0')} / 共 {String(total).padStart(2, '0')} 件作品</span>
-      <a class="selected__all" href="/works/" data-nav-link data-cursor-label="Archive">
+      <a class="selected__all" href={withBase('/works/')} data-nav-link data-cursor-label="Archive">
         <span>浏览全部作品</span>
         <span class="selected__all-arrow"><Icon name="arrowRight" size={18} /></span>
       </a>

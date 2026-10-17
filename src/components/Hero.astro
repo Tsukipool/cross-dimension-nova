@@ -1,6 +1,7 @@
 ---
 import Icon from './Icon.astro';
 import ParticleField from './ParticleField.astro';
+import { withBase } from '../lib/url';
 ---
 
 <section class="hero" data-hero aria-labelledby="hero-title">
@@ -26,7 +27,7 @@ import ParticleField from './ParticleField.astro';
         <div class="hero__card-wrap" style="--rot: -7deg; --bob-delay: -2.8s">
           <article class="hero__card" data-hero-card>
             <div class="hero__card-media">
-              <img src="/art/moonlit-tea-party.svg" alt="" width="1200" height="1500" loading="eager" />
+              <img src={withBase('/art/moonlit-tea-party.svg')} alt="" width="1200" height="1500" loading="eager" />
             </div>
             <div class="hero__card-meta">
               <span>003 / 月面茶会</span>
@@ -42,7 +43,7 @@ import ParticleField from './ParticleField.astro';
         <div class="hero__card-wrap" style="--rot: 6deg; --bob-delay: -5.4s">
           <article class="hero__card" data-hero-card>
             <div class="hero__card-media">
-              <img src="/art/stardust-tram.svg" alt="" width="1200" height="1500" loading="eager" />
+              <img src={withBase('/art/stardust-tram.svg')} alt="" width="1200" height="1500" loading="eager" />
             </div>
             <div class="hero__card-meta">
               <span>001 / 星屑电车</span>
@@ -58,7 +59,7 @@ import ParticleField from './ParticleField.astro';
         <div class="hero__card-wrap" style="--rot: -3deg; --bob-delay: -1.2s">
           <article class="hero__card hero__card--wide" data-hero-card>
             <div class="hero__card-media">
-              <img src="/art/first-night-screening.svg" alt="" width="1920" height="1080" loading="lazy" />
+              <img src={withBase('/art/first-night-screening.svg')} alt="" width="1920" height="1080" loading="lazy" />
             </div>
             <div class="hero__card-meta">
               <span>008 / 放映室</span>
@@ -104,11 +105,11 @@ import ParticleField from './ParticleField.astro';
       </p>
 
       <div class="hero__actions" data-hero-fade>
-        <a class="btn" href="/works/" data-nav-link data-magnetic>
+        <a class="btn" href={withBase('/works/')} data-nav-link data-magnetic>
           <span>进入作品档案</span>
           <span class="btn__dot"><Icon name="arrowUpRight" size={14} /></span>
         </a>
-        <a class="text-link hero__about-link" href="/about/" data-nav-link>
+        <a class="text-link hero__about-link" href={withBase('/about/')} data-nav-link>
           <span class="text-link__line">了解社团</span>
           <Icon name="arrowRight" size={13} />
         </a>
@@ -155,7 +156,7 @@ import ParticleField from './ParticleField.astro';
     content: "";
     position: absolute;
     inset: 0;
-    background: url("/art/starfield.svg") center / cover no-repeat;
+    background: var(--starfield-url) center / cover no-repeat;
     opacity: 0.62;
   }
 

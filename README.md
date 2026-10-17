@@ -79,7 +79,8 @@ npm run art            # 重新生成 public/art 下的示例插画和静态星�
 │  ├─ og.jpg                  # 社交分享图 1200×630
 │  └─ favicon.svg
 ├─ scripts/generate-art.mjs   # 生成示例 SVG 与 starfield.svg
-├─ dist/                      # 构建产物（已纳入 Git）
+├─ .github/workflows/deploy.yml # GitHub Pages 自动构建与部署
+├─ dist/                      # 构建产物（已纳入 Git，供直接部署）
 ├─ astro.config.mjs
 └─ package.json
 ```
@@ -124,6 +125,8 @@ frontmatter 字段：
 4. 正文就是用 Markdown 写的作品介绍；小说正文中的 `##` 标题会自动成为章节目录。
 5. 如果希望出现在首页“精选”，把 slug 加入 `src/pages/index.astro` 的 `selectedIds` 数组，并按版式需要调整顺序。
 6. 运行 `npm run build`，构建通过后再提交。
+
+frontmatter 中的 `cover`、`gallery[].src` 和 `video` 会在 `src/lib/works.ts` 中自动加上部署用的 base path（GitHub Pages 项目站点需要），直接写 `/art/...`、`/media/...` 即可。Markdown 正文中的图片或链接不会自动处理；正文尽量使用文字或与页面内已有资源引用方式保持一致。
 
 最简插画示例：
 
@@ -281,6 +284,24 @@ duration: "00:32"
 
 如果新增顶部导航锚点，在页面 section 上加 `id`，链接使用 `/#id` 或 `#id` 即可。
 
+### base path
+
+站点同时支持根域名和 GitHub Pages 项目站点（`/<repo>/`）：
+
+- `import.meta.env.BASE_URL` 由 `BASE_PATH` 构建环境变量决定。
+- 新增普通链接、图片或视频路径时，如果是根绝对路径（以 `/` 开头），请在 `.astro` 中导入并使用 `withBase()`：
+
+```astro
+---
+import { withBase } from '../lib/url';
+---
+<a href={withBase('/about/')}>关于</a>
+<img src={withBase('/art/example.svg')} alt="" />
+```
+
+- 作品 frontmatter 的媒体路径会自动处理，不需要手动加 `withBase()`。
+- CSS 中的共享星图通过 `--starfield-url` 变量提供，已自动带 base path。新增 CSS 资源时避免写死 `/art/...`。
+
 ## SEO 与部署
 
 ### 构建前设置域名
@@ -297,11 +318,35 @@ PowerShell：
 $env:SITE_URL="https://your-domain.com"; npm run build
 ```
 
+如果部署在子路径（例如 GitHub Pages 项目站点），还需要设置 `BASE_PATH`，且 `SITE_URL` 只写域名源：
+
+```bash
+SITE_URL="https://user.github.io" BASE_PATH="/repo-name" npm run build
+```
+
 也可以修改 `astro.config.mjs` 中的 `site` 回退值，但推荐在部署环境注入 `SITE_URL`。
+
+### GitHub Pages 自动部署
+
+仓库已经包含 `.github/workflows/deploy.yml`，推送到 `main` 后会自动构建并发布。
+
+1. 将仓库推送到 GitHub。
+2. 打开仓库 **Settings → Pages**，在 **Build and deployment** 中把 **Source** 设为 **GitHub Actions**。
+3. 推送到 `main`，或在 **Actions** 页面手动运行 **Deploy to GitHub Pages**。
+4. 首次部署完成后，Actions 会显示站点地址。
+
+工作流使用官方 `actions/configure-pages` 自动读取部署源：
+
+- `SITE_URL` = `steps.pages.outputs.origin`
+- `BASE_PATH` = `steps.pages.outputs.base_path`
+
+因此项目站点 `https://<user>.github.io/<repo>/`、用户站点 `https://<user>.github.io/` 和自定义域名都不需要修改源码。若默认分支不是 `main`，请同步修改 `.github/workflows/deploy.yml` 的触发分支。
+
+GitHub Pages 由工作流重新构建 `dist`，**不会使用仓库中已提交的 `dist/`**。仓库里的 `dist/` 主要用于本地直接打开或部署到其他静态托管。
 
 ### 静态部署
 
-`dist/` 是纯静态站点，可直接部署到 Cloudflare Pages、Netlify、Vercel、GitHub Pages 或任意静态服务器。`dist/404.html` 是自定义 404 页面，需要托管平台支持 404 fallback。
+`dist/` 是纯静态站点，可直接部署到 Cloudflare Pages、Netlify、Vercel 或任意静态服务器。`dist/404.html` 是自定义 404 页面，需要托管平台支持 404 fallback。若部署在子路径，构建时必须设置 `BASE_PATH`，否则站内链接和资源路径会指向域名根。
 
 部署前检查：
 
@@ -323,6 +368,8 @@ $env:SITE_URL="https://your-domain.com"; npm run build
 2. 确认构建成功，并检查 `dist/` 中的关键页面；
 3. 将源码与 `dist/` 一起提交；
 4. **不要手动编辑 `dist/`**，它会在下一次构建时被覆盖。
+
+注意：仓库内的 `dist/` 是按本地默认配置（根路径、fallback 域名）生成的；GitHub Pages 项目站点的子路径构建由 Action 单独完成，不要把仓库里的 `dist/` 直接上传到项目子路径。
 
 如果之后决定不在版本库中保存构建产物，可以从 `.gitignore` 恢复 `dist/` 并在 Git 中移除缓存，但本次维护约定是保留它。
 

@@ -1,5 +1,6 @@
 ---
 import Icon from './Icon.astro';
+import { withBase } from '../lib/url';
 ---
 
 <section class="manifesto section--tight" aria-labelledby="manifesto-title">
@@ -11,7 +12,7 @@ import Icon from './Icon.astro';
           山东省济钢高级中学（全福校区） · 跨次元新星动漫社<br />
           一个因热爱动画而相遇的学生创作社团
         </p>
-        <a class="text-link" href="/about/" data-nav-link data-reveal style="--reveal-delay: .16s">
+        <a class="text-link" href={withBase('/about/')} data-nav-link data-reveal style="--reveal-delay: .16s">
           <span class="text-link__line">关于我们</span>
           <Icon name="arrowUpRight" size={13} />
         </a>

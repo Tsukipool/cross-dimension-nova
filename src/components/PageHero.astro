@@ -1,5 +1,6 @@
 ---
 import ParticleField from './ParticleField.astro';
+import { withBase } from '../lib/url';
 
 interface Props {
   eyebrow: string;
@@ -51,7 +52,7 @@ const {
       image && (
         <div class="page-hero__art-tilt" data-tilt>
           <figure class="page-hero__art">
-            <img src={image} alt={imageAlt} width="1200" height="1500" loading="eager" />
+            <img src={withBase(image)} alt={imageAlt} width="1200" height="1500" loading="eager" />
             <figcaption>
               <span>{meta}</span>
               <span>✦</span>
@@ -110,7 +111,7 @@ const {
     content: "";
     position: absolute;
     inset: 0;
-    background: url("/art/starfield.svg") center / cover no-repeat;
+    background: var(--starfield-url) center / cover no-repeat;
     opacity: 0.3;
   }
 

@@ -1,6 +1,7 @@
 ---
 import Logo from './Logo.astro';
 import Icon from './Icon.astro';
+import { withBase } from '../lib/url';
 
 const year = new Date().getFullYear();
 ---
@@ -17,10 +18,10 @@ const year = new Date().getFullYear();
 
       <div class="footer__nav">
         <p class="footer__label">CONTENTS</p>
-        <a href="/works/" data-nav-link><span>作品档案</span><span class="footer__num">01</span></a>
-        <a href="/about/" data-nav-link><span>关于社团</span><span class="footer__num">02</span></a>
-        <a href="/#cinema" data-nav-link><span>放映室</span><span class="footer__num">03</span></a>
-        <a href="/#join" data-nav-link><span>加入我们</span><span class="footer__num">04</span></a>
+        <a href={withBase('/works/')} data-nav-link><span>作品档案</span><span class="footer__num">01</span></a>
+        <a href={withBase('/about/')} data-nav-link><span>关于社团</span><span class="footer__num">02</span></a>
+        <a href={withBase('/#cinema')} data-nav-link><span>放映室</span><span class="footer__num">03</span></a>
+        <a href={withBase('/#join')} data-nav-link><span>加入我们</span><span class="footer__num">04</span></a>
       </div>
 
       <div class="footer__info">

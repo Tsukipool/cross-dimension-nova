@@ -1,21 +1,39 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
+import { withBase } from './url';
 
 export type Work = CollectionEntry<'works'>;
 export type WorkType = Work['data']['type'];
 
 export const typeMeta: Record<WorkType, { label: string; en: string; href: string; motif: string }> = {
-  illustration: { label: '插画', en: 'ILLUSTRATION', href: '/works/?type=illustration', motif: '✦' },
-  novel: { label: '小说', en: 'NOVEL', href: '/works/?type=novel', motif: '❋' },
-  video: { label: '影像', en: 'MOTION', href: '/works/?type=video', motif: '◉' },
+  illustration: { label: '插画', en: 'ILLUSTRATION', href: withBase('/works/?type=illustration'), motif: '✦' },
+  novel: { label: '小说', en: 'NOVEL', href: withBase('/works/?type=novel'), motif: '❋' },
+  video: { label: '影像', en: 'MOTION', href: withBase('/works/?type=video'), motif: '◉' },
 };
 
+function withBaseWork(work: Work): Work {
+  return {
+    ...work,
+    data: {
+      ...work.data,
+      cover: withBase(work.data.cover),
+      video: work.data.video ? withBase(work.data.video) : undefined,
+      gallery: work.data.gallery.map((item) => ({
+        ...item,
+        src: withBase(item.src),
+      })),
+    },
+  } as Work;
+}
+
 export function workHref(work: Work) {
-  return `/works/${work.id}/`;
+  return withBase(`/works/${work.id}/`);
 }
 
 export async function getWorks() {
   const works = await getCollection('works');
-  return works.sort((a, b) => a.data.order - b.data.order);
+  return works
+    .map(withBaseWork)
+    .sort((a, b) => a.data.order - b.data.order);
 }
 
 export async function getFeatured() {
