@@ -1,0 +1,330 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import WorkCard from '../../components/WorkCard.astro';
+import Icon from '../../components/Icon.astro';
+import { getWorks } from '../../lib/works';
+
+const works = await getWorks();
+
+const counts = {
+  all: works.length,
+  illustration: works.filter((work) => work.data.type === 'illustration').length,
+  novel: works.filter((work) => work.data.type === 'novel').length,
+  video: works.filter((work) => work.data.type === 'video').length,
+};
+
+const ratios = ['4 / 5', '16 / 10', '3 / 4', '16 / 10', '4 / 5', '3 / 4', '16 / 10', '3 / 4', '4 / 5'];
+const mediaCount = [counts.illustration, counts.novel, counts.video].filter(Boolean).length;
+const archiveMeta = `${String(counts.all).padStart(2, '0')} WORKS · ${String(mediaCount).padStart(2, '0')} MEDIA · EST. 2026`;
+
+const filters = [
+  { key: 'all', label: '全部', en: 'ALL', count: counts.all },
+  { key: 'illustration', label: '插画', en: 'ILLUSTRATION', count: counts.illustration },
+  { key: 'novel', label: '小说', en: 'NOVEL', count: counts.novel },
+  { key: 'video', label: '影像', en: 'MOTION', count: counts.video },
+];
+---
+
+<BaseLayout
+  title="作品档案"
+  description="跨次元新星的作品档案：概念插画、短篇小说与概念影像。浏览社团成员关于画面、故事与声音的创作。"
+  page="works"
+  image="/art/star-trail-pv.svg"
+>
+  <PageHero
+    eyebrow="WORKS ARCHIVE / 作品"
+    title="作品档案"
+    english="ARCHIVE"
+    index="01"
+    lead="画格里的空气、纸页上的心跳、放映机前的一束光。这里按创作序列收藏跨次元新星的全部作品，也收藏我们还在学习如何去爱的世界。"
+    meta={archiveMeta}
+    image="/art/star-trail-pv.svg"
+    imageAlt="星轨概念 PV 视觉海报"
+  >
+    <div class="archive-summary" slot="aside">
+      <span class="archive-summary__number">{String(works.length).padStart(2, '0')}</span>
+      <span class="archive-summary__label">WORKS<br />IN THE ARCHIVE</span>
+    </div>
+  </PageHero>
+
+  <section class="archive section--tight" aria-label="作品列表">
+    <div class="container">
+      <div class="archive__toolbar" data-reveal>
+        <div class="archive__filters" role="group" aria-label="按作品类型筛选">
+          {filters.map((filter) => (
+            <button
+              class:list={['archive__filter', { 'is-active': filter.key === 'all' }]}
+              type="button"
+              data-filter={filter.key}
+              aria-pressed={filter.key === 'all' ? 'true' : 'false'}
+            >
+              <span class="archive__filter-cn">{filter.label}</span>
+              <span class="archive__filter-en">{filter.en}</span>
+              <sup>{String(filter.count).padStart(2, '0')}</sup>
+            </button>
+          ))}
+        </div>
+
+        <div class="archive__status">
+          <span class="archive__status-label">SHOWING</span>
+          <span class="archive__status-count" data-works-visible aria-live="polite">{String(works.length).padStart(2, '0')}</span>
+          <span class="archive__status-total">/ {String(works.length).padStart(2, '0')}</span>
+        </div>
+      </div>
+
+      <div class="archive__grid" data-work-grid>
+        {works.map((work, index) => (
+          <WorkCard work={work} ratio={ratios[index % ratios.length]} class="archive-item" showIndex />
+        ))}
+      </div>
+
+      <div class="archive__outro" data-reveal>
+        <div>
+          <p class="eyebrow">KEEP EXPLORING / 06</p>
+          <p class="archive__outro-title">次元仍在扩张中。</p>
+        </div>
+        <a class="selected-all-link" href="/about/" data-nav-link>
+          <span>认识这个社团</span>
+          <span class="selected-all-arrow"><Icon name="arrowUpRight" size={18} /></span>
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .archive-summary {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .archive-summary__number {
+    font-family: var(--display);
+    font-size: clamp(52px, 5vw, 78px);
+    font-style: italic;
+    line-height: 0.8;
+    color: var(--accent);
+  }
+
+  .archive-summary__label {
+    font-family: var(--mono);
+    font-size: 8px;
+    line-height: 1.8;
+    letter-spacing: 0.16em;
+    text-align: left;
+    color: var(--ink-faint);
+  }
+
+  .archive {
+    position: relative;
+    background:
+      radial-gradient(ellipse 40% 30% at 12% 18%, rgba(76, 58, 80, 0.1), transparent 70%),
+      transparent;
+  }
+
+  .archive__toolbar {
+    position: sticky;
+    top: var(--nav-h);
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+    margin-bottom: clamp(46px, 6vw, 84px);
+    padding: 14px 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    background: rgba(7, 8, 13, 0.76);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+  }
+
+  .archive__filters {
+    display: flex;
+    align-items: center;
+    gap: clamp(6px, 1vw, 14px);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .archive__filters::-webkit-scrollbar {
+    display: none;
+  }
+
+  .archive__filter {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 7px;
+    flex: 0 0 auto;
+    padding: 10px 14px;
+    border-radius: 999px;
+    color: var(--ink-dim);
+    transition: color 0.35s ease, background 0.35s ease;
+  }
+
+  .archive__filter:hover {
+    color: var(--ink);
+    background: rgba(243, 238, 227, 0.05);
+  }
+
+  .archive__filter.is-active {
+    background: var(--ink);
+    color: var(--bg);
+  }
+
+  .archive__filter-cn {
+    font-family: var(--serif);
+    font-size: 15px;
+    letter-spacing: 0.08em;
+  }
+
+  .archive__filter-en {
+    font-family: var(--mono);
+    font-size: 7px;
+    letter-spacing: 0.14em;
+    opacity: 0.6;
+  }
+
+  .archive__filter sup {
+    font-family: var(--display);
+    font-size: 10px;
+    font-style: italic;
+    opacity: 0.7;
+  }
+
+  .archive__status {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 6px;
+    flex: 0 0 auto;
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: 0.14em;
+    color: var(--ink-faint);
+  }
+
+  .archive__status-count {
+    font-family: var(--display);
+    font-size: 22px;
+    font-style: italic;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .archive__grid {
+    columns: 3;
+    column-gap: clamp(30px, 4vw, 64px);
+  }
+
+  .archive__grid > :global(.work-card) {
+    display: inline-block;
+    width: 100%;
+    margin-bottom: clamp(42px, 5vw, 82px);
+    break-inside: avoid;
+    vertical-align: top;
+  }
+
+  .archive__grid > :global(.work-card.is-filtered-out) {
+    display: none !important;
+  }
+
+  .archive__grid.is-filtered {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 330px), 1fr));
+    column-gap: clamp(30px, 4vw, 64px);
+    row-gap: clamp(42px, 5vw, 82px);
+    align-items: start;
+  }
+
+  .archive__grid.is-filtered > :global(.work-card) {
+    display: block;
+    width: 100%;
+    margin-bottom: 0;
+  }
+
+  .archive__outro {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 30px;
+    margin-top: clamp(40px, 6vw, 90px);
+    padding-top: clamp(30px, 4vw, 50px);
+    border-top: 1px solid var(--line);
+  }
+
+  .archive__outro-title {
+    margin-top: 16px;
+    font-family: var(--serif);
+    font-size: clamp(28px, 3.4vw, 52px);
+    line-height: 1.3;
+    letter-spacing: -0.03em;
+  }
+
+  .selected-all-link {
+    display: inline-flex;
+    align-items: center;
+    gap: clamp(16px, 2.4vw, 30px);
+    font-family: var(--serif);
+    font-size: clamp(16px, 1.4vw, 21px);
+    color: var(--ink-soft);
+    transition: color 0.35s ease;
+  }
+
+  .selected-all-arrow {
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    border: 1px solid var(--line-strong);
+    border-radius: 50%;
+    transition: background 0.35s ease, color 0.35s ease, transform 0.45s var(--ease);
+  }
+
+  .selected-all-link:hover {
+    color: var(--ink);
+  }
+  .selected-all-link:hover .selected-all-arrow {
+    background: var(--ink);
+    color: var(--bg);
+    transform: rotate(45deg);
+  }
+
+  @media (max-width: 1100px) {
+    .archive__grid {
+      columns: 2;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .archive__toolbar {
+      top: var(--nav-h);
+      gap: 16px;
+      padding: 10px 0;
+    }
+    .archive__filter {
+      padding: 8px 10px;
+      gap: 5px;
+    }
+    .archive__filter-cn {
+      font-size: 13px;
+    }
+    .archive__filter-en {
+      display: none;
+    }
+    .archive__status-label,
+    .archive__status-total {
+      display: none;
+    }
+    .archive__grid {
+      columns: 1;
+    }
+    .archive__grid > :global(.work-card) {
+      margin-bottom: 52px;
+    }
+    .archive__outro {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+</style>

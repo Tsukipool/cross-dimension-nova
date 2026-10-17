@@ -1,0 +1,25 @@
+---
+import Icon from './Icon.astro';
+---
+
+<dialog class="lightbox" data-lightbox aria-label="作品图片预览">
+  <button class="lightbox__close" type="button" data-lightbox-close aria-label="关闭预览">
+    <Icon name="close" size={18} />
+  </button>
+  <button class="lightbox__nav lightbox__nav--prev" type="button" data-lightbox-prev aria-label="上一张">
+    <Icon name="arrowLeft" size={18} />
+  </button>
+  <button class="lightbox__nav lightbox__nav--next" type="button" data-lightbox-next aria-label="下一张">
+    <Icon name="arrowRight" size={18} />
+  </button>
+
+  <div class="lightbox__stage">
+    <figure class="lightbox__figure">
+      <img class="lightbox__img" data-lightbox-img alt="" />
+      <figcaption class="lightbox__caption">
+        <span class="lightbox__count" data-lightbox-count>01</span>
+        <span data-lightbox-caption></span>
+      </figcaption>
+    </figure>
+  </div>
+</dialog>

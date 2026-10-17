@@ -1,0 +1,1183 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import ParticleField from '../components/ParticleField.astro';
+import Icon from '../components/Icon.astro';
+import { getWorks } from '../lib/works';
+
+const works = await getWorks();
+const illustration = works.find((work) => work.id === 'stardust-tram');
+const novel = works.find((work) => work.id === 'heartbeat-at-worlds-end');
+const video = works.find((work) => work.id === 'star-trail-pv');
+
+const beliefs = [
+  {
+    no: '01',
+    title: '一个正式的相遇平台',
+    text: '校园里热爱动画的同学很多，但在此之前，我们缺少一个可以稳定交流、学习和展示的空间。社团让这些喜欢有了名字，也有了固定的相遇方式。',
+    glyph: '✦',
+  },
+  {
+    no: '02',
+    title: '校园文化的另一种颜色',
+    text: '动画是当代青年文化的重要部分。我们希望通过社团活动，丰富校园的社团类型与文化多样性，让校园更年轻、更有活力。',
+    glyph: '◐',
+  },
+  {
+    no: '03',
+    title: '不止一种才艺的舞台',
+    text: '绘画、写作、配音、舞蹈、表演、视频制作——动画社连接着许多不同的表达方式，让每一种特长都有被看见的机会。',
+    glyph: '◇',
+  },
+  {
+    no: '04',
+    title: '跨越年级的交流',
+    text: '社员来自不同年级与班级。一起看片、聊天、做练习，我们在创作之外认识彼此，也在团队协作中长出新的朋友。',
+    glyph: '✳',
+  },
+  {
+    no: '05',
+    title: '美育的另一种入口',
+    text: '通过绘画、音乐、表演与影像，我们试着提升审美素养和艺术修养。比起标准答案，我们更在意每个人真实感受到的美。',
+    glyph: '❋',
+  },
+];
+
+const steps = [
+  {
+    no: '01',
+    label: 'WATCH',
+    title: '一起看',
+    text: '定期选取优秀动画作品，赏析美术风格、镜头语言与故事叙事。不急着下结论，先把画面完整地感受一遍。',
+  },
+  {
+    no: '02',
+    label: 'TRY',
+    title: '自由尝试',
+    text: '辅以简单的图像创意练习，自愿参与，不做强制创作要求。想画就画，想写就写，也可以只是带着好奇心来看。',
+  },
+  {
+    no: '03',
+    label: 'SHARE',
+    title: '聊聊感受',
+    text: '定期开展内部交流分享，聊聊对画面、角色与故事的理解。每一种视角都值得被听见，每一次表达都不必完美。',
+  },
+];
+---
+
+<BaseLayout
+  title="关于社团"
+  description="跨次元新星是山东省济钢高级中学（全福校区）的艺术类动漫社团，以动画影像艺术为载体开展美育学习，尊重每一个人的兴趣与表达。"
+  page="about"
+  image="/art/paper-moon-observatory.svg"
+>
+  <PageHero
+    eyebrow="ABOUT THE CLUB / 关于"
+    title="关于社团"
+    english="ABOUT"
+    index="02"
+    lead="以动画影像艺术为载体开展美育学习。我们相信，审美不是一门需要被考核的课，而是一种可以一起分享的能力。"
+    meta="JINAN · SHANDONG · EST. 2026"
+    image="/art/paper-moon-observatory.svg"
+    imageAlt="纸月亮观测站概念插画"
+    accent="var(--accent-warm)"
+    particleAccent="#f3c79c"
+  >
+    <div class="about-hero-meta" slot="aside">
+      <span class="about-hero-meta__seal">跨</span>
+      <span>山东省济钢高级中学（全福校区）<br />艺术类社团 · 指导老师 褚国梁</span>
+    </div>
+  </PageHero>
+
+  <section class="intro section" aria-labelledby="intro-title">
+    <div class="container">
+      <div class="intro__grid">
+        <div class="intro__heading">
+          <p class="eyebrow" data-reveal>WHO WE ARE / 01</p>
+          <h2 class="intro__title" id="intro-title" data-reveal style="--reveal-delay: .08s">
+            一个因动画<br />而相遇的地方。
+          </h2>
+          <p class="intro__jp" aria-hidden="true" data-reveal style="--reveal-delay: .14s">アニメがあるから、ここにいる。</p>
+          <div class="intro__mark" aria-hidden="true" data-reveal>
+            <span>✦</span>
+          </div>
+        </div>
+
+        <div class="intro__copy">
+          <p class="intro__lead" data-reveal>
+            跨次元新星是山东省济钢高级中学（全福校区）的艺术类学生社团。我们因动画而聚在一起，也因动画开始认真地看世界——看一束光怎么落下，看一个角色为什么回头，看一段故事如何被讲完。
+          </p>
+          <div class="intro__body" data-reveal style="--reveal-delay: .08s">
+            <p>
+              动漫文化是当代青年文化的重要组成部分。我们希望通过这个正式的组织平台，为校园里的动画爱好者提供交流、学习与展示的空间，也为校园文化增加一种更年轻、更丰富的颜色。
+            </p>
+            <p>
+              社团以动画艺术赏析为核心活动，同时连接绘画、写作、配音、舞蹈、表演、视频制作等多种表达。这里没有统一的“正确喜欢方式”，只有彼此尊重的好奇心。
+            </p>
+          </div>
+
+          <dl class="intro__facts" data-reveal-group>
+            <div><dt>NAME</dt><dd>跨次元新星</dd></div>
+            <div><dt>SCHOOL</dt><dd>山东省济钢高级中学（全福校区）</dd></div>
+            <div><dt>CATEGORY</dt><dd>艺术类</dd></div>
+            <div><dt>ADVISOR</dt><dd>褚国梁</dd></div>
+            <div><dt>ESTABLISHED</dt><dd>2026</dd></div>
+            <div><dt>COMMUNITY</dt><dd>12+ 位同好响应</dd></div>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="beliefs section" aria-labelledby="beliefs-title">
+    <div class="container">
+      <header class="section-head beliefs__head">
+        <div>
+          <p class="eyebrow" data-reveal>WHY WE EXIST / 02</p>
+          <h2 class="section-head__title" id="beliefs-title" data-reveal style="--reveal-delay: .08s">
+            我们为什么<em>在这里</em>
+          </h2>
+        </div>
+        <div class="section-head__aside" data-reveal style="--reveal-delay: .16s">
+          <p>一个社团的成立，不只是多了一个名字。它意味着一种兴趣终于有了可以安放的地方，也意味着校园里多了一种被理解的可能会。</p>
+        </div>
+      </header>
+
+      <div class="beliefs__grid">
+        {beliefs.map((belief, index) => (
+          <article
+            class:list={['belief', `belief--${index + 1}`]}
+            data-tilt
+            data-reveal="scale"
+            style={`--reveal-delay: ${index * 0.05}s`}
+          >
+            <div class="belief__inner">
+              <div class="belief__top">
+                <span class="belief__no">{belief.no}</span>
+                <span class="belief__glyph" aria-hidden="true">{belief.glyph}</span>
+              </div>
+              <h3 class="belief__title">{belief.title}</h3>
+              <p class="belief__text">{belief.text}</p>
+              <span class="belief__line" aria-hidden="true"></span>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="creed" aria-labelledby="creed-title">
+    <div class="creed__texture" aria-hidden="true"></div>
+    <div class="container">
+      <div class="creed__head" data-reveal>
+        <p class="eyebrow eyebrow--dark">OUR CREED / 03</p>
+        <span>社团宗旨 · CLUB PURPOSE</span>
+      </div>
+
+      <blockquote class="creed__quote" data-reveal>
+        <span class="creed__mark" aria-hidden="true">“</span>
+        <p id="creed-title">
+          以动画影像艺术为载体<br />
+          开展美育学习，引导社员<br />
+          赏析优秀动画作品，<br />
+          <em>感受画面与叙事之美。</em>
+        </p>
+      </blockquote>
+
+      <div class="creed__foot" data-reveal>
+        <p>
+          尊重每个人的兴趣，自愿参与相关创意练习，<br />
+          在轻松的氛围中提升艺术审美。
+        </p>
+        <div class="creed__seal" aria-hidden="true">
+          <span>美</span>
+          <span>育</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="rhythm section" aria-labelledby="rhythm-title">
+    <div class="container">
+      <header class="section-head">
+        <div>
+          <p class="eyebrow" data-reveal>OUR RHYTHM / 04</p>
+          <h2 class="section-head__title" id="rhythm-title" data-reveal style="--reveal-delay: .08s">
+            一起度过<br />一个<em>社团下午</em>
+          </h2>
+        </div>
+        <div class="section-head__aside" data-reveal style="--reveal-delay: .16s">
+          <p>常规活动保持低成本、易组织。没有必须完成的作业，也没有需要证明自己的门槛，只有画面、对话和一段被认真度过的时间。</p>
+        </div>
+      </header>
+
+      <div class="rhythm__steps">
+        {steps.map((step, index) => (
+          <article class="rhythm__step" data-reveal style={`--reveal-delay: ${index * 0.08}s`}>
+            <div class="rhythm__step-top">
+              <span class="rhythm__no">{step.no}</span>
+              <span class="rhythm__label">{step.label}</span>
+            </div>
+            <h3 class="rhythm__title">{step.title}</h3>
+            <p class="rhythm__text">{step.text}</p>
+            <span class="rhythm__dot" aria-hidden="true"></span>
+          </article>
+        ))}
+      </div>
+
+      <div class="rhythm__note" data-reveal>
+        <span class="rhythm__note-star">✦</span>
+        <p>参与原则：尊重兴趣，自愿参与。喜欢不是任务，作品也不需要被催促。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="disciplines section" aria-labelledby="disciplines-title">
+    <div class="container">
+      <header class="section-head">
+        <div>
+          <p class="eyebrow" data-reveal>OUR MEDIA / 05</p>
+          <h2 class="section-head__title" id="disciplines-title" data-reveal style="--reveal-delay: .08s">
+            三种表达，<em>一个次元</em>
+          </h2>
+        </div>
+        <div class="section-head__aside" data-reveal style="--reveal-delay: .16s">
+          <p>画、写、拍。不同的媒介，都是我们理解世界的方法。点击进入对应的作品档案。</p>
+        </div>
+      </header>
+
+      <div class="disciplines__grid">
+        {illustration && (
+          <a class="discipline" href="/works/?type=illustration" data-nav-link data-cursor-label="View" data-reveal>
+            <img src={illustration.data.cover} alt="星屑电车概念插画" loading="lazy" width="1200" height="1500" />
+            <span class="discipline__shade"></span>
+            <span class="discipline__no">N° 01</span>
+            <span class="discipline__content">
+              <span class="discipline__en">ILLUSTRATION</span>
+              <span class="discipline__title">插画</span>
+              <span class="discipline__text">让空气、光线和没有说出口的情绪，停在一格画面里。</span>
+            </span>
+            <span class="discipline__arrow"><Icon name="arrowUpRight" size={17} /></span>
+          </a>
+        )}
+
+        {novel && (
+          <a class="discipline" href="/works/?type=novel" data-nav-link data-cursor-label="Read" data-reveal style="--reveal-delay: .08s">
+            <img src={novel.data.cover} alt="短篇小说在世界尽头我们交换心跳封面" loading="lazy" width="1200" height="1800" />
+            <span class="discipline__shade"></span>
+            <span class="discipline__no">N° 02</span>
+            <span class="discipline__content">
+              <span class="discipline__en">NOVEL</span>
+              <span class="discipline__title">文字</span>
+              <span class="discipline__text">把心跳、距离和没有寄出的句子，写成一个可以重读的世界。</span>
+            </span>
+            <span class="discipline__arrow"><Icon name="arrowUpRight" size={17} /></span>
+          </a>
+        )}
+
+        {video && (
+          <a class="discipline" href="/works/?type=video" data-nav-link data-cursor-label="Play" data-reveal style="--reveal-delay: .16s">
+            <img src={video.data.cover} alt="星轨概念 PV 视觉海报" loading="lazy" width="1600" height="1000" />
+            <span class="discipline__shade"></span>
+            <span class="discipline__no">N° 03</span>
+            <span class="discipline__content">
+              <span class="discipline__en">MOTION</span>
+              <span class="discipline__title">影像</span>
+              <span class="discipline__text">让光开始移动，让一个瞬间拥有自己的呼吸和节奏。</span>
+            </span>
+            <span class="discipline__arrow"><Icon name="arrowUpRight" size={17} /></span>
+          </a>
+        )}
+      </div>
+    </div>
+  </section>
+
+  <section class="about-join" id="join" aria-labelledby="about-join-title">
+    <div class="about-join__bg" aria-hidden="true">
+      <ParticleField variant="dust" density={0.8} accent="#f3c79c" opacity={0.5} />
+      <span class="about-join__word">NOVA</span>
+      <span class="about-join__orbit"></span>
+      <span class="about-join__star">✦</span>
+    </div>
+    <div class="container">
+      <div class="about-join__inner">
+        <p class="eyebrow" data-reveal>JOIN THE DIMENSION / 06</p>
+        <h2 class="about-join__title" id="about-join-title" data-reveal style="--reveal-delay: .08s">
+          下一颗星，<br /><em>可能就是你。</em>
+        </h2>
+        <p class="about-join__lead" data-reveal style="--reveal-delay: .14s">
+          无论你擅长画画、写作、配音、剪辑，还是只想在放映时安静地坐在角落里——只要你愿意来，这里就有你的位置。
+        </p>
+
+        <div class="about-join__tags" data-reveal style="--reveal-delay: .18s">
+          {['插画', '写作', '配音', '舞蹈', '表演', '视频制作', '动画赏析'].map((tag) => <span>{tag}</span>)}
+        </div>
+
+        <div class="about-join__info" data-reveal-group>
+          <div><span>招募范围</span><strong>山东省济钢高级中学（全福校区）在校学生</strong></div>
+          <div><span>参与原则</span><strong>尊重兴趣 · 自愿参与</strong></div>
+          <div><span>加入方式</span><strong>关注校内招新公告</strong></div>
+        </div>
+
+        <div class="about-join__actions" data-reveal style="--reveal-delay: .26s">
+          <a class="btn" href="/works/" data-nav-link data-magnetic>
+            <span>先看看我们的作品</span>
+            <span class="btn__dot"><Icon name="arrowUpRight" size={14} /></span>
+          </a>
+          <a class="text-link" href="/" data-nav-link>
+            <span class="text-link__line">回到首页</span>
+            <Icon name="arrowRight" size={13} />
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .about-hero-meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    text-align: left;
+    font-family: var(--mono);
+    font-size: 8px;
+    line-height: 1.9;
+    letter-spacing: 0.08em;
+    color: var(--ink-faint);
+  }
+
+  .about-hero-meta__seal {
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    flex: 0 0 auto;
+    border: 1px solid color-mix(in srgb, var(--accent-warm) 55%, transparent);
+    border-radius: 50%;
+    font-family: var(--serif);
+    font-size: 20px;
+    color: var(--accent-warm);
+    transform: rotate(-8deg);
+  }
+
+  /* ---------------- Intro ---------------- */
+  .intro {
+    background:
+      radial-gradient(ellipse 40% 55% at 90% 20%, rgba(110, 71, 84, 0.08), transparent 70%),
+      transparent;
+  }
+
+  .intro__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+    gap: clamp(50px, 9vw, 160px);
+    align-items: start;
+  }
+
+  .intro__heading {
+    position: sticky;
+    top: calc(var(--nav-h) + 40px);
+  }
+
+  .intro__title {
+    margin-top: 24px;
+    font-family: var(--serif);
+    font-size: clamp(42px, 5.3vw, 86px);
+    font-weight: 400;
+    line-height: 1.24;
+    letter-spacing: -0.045em;
+  }
+
+  .intro__jp {
+    margin-top: 24px;
+    font-family: var(--serif);
+    font-size: 10px;
+    letter-spacing: 0.28em;
+    color: var(--ink-faint);
+  }
+
+  .intro__mark {
+    margin-top: clamp(40px, 6vw, 80px);
+    width: clamp(140px, 13vw, 200px);
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    position: relative;
+  }
+
+  .intro__mark::before {
+    content: "";
+    position: absolute;
+    inset: 14px;
+    border: 1px dashed rgba(243, 238, 227, 0.16);
+    border-radius: 50%;
+    animation: spin 46s linear infinite;
+  }
+
+  .intro__mark span {
+    font-size: 24px;
+    color: var(--accent);
+    animation: spin 20s linear infinite;
+  }
+
+  .intro__lead {
+    font-family: var(--serif);
+    font-size: clamp(21px, 2.2vw, 31px);
+    line-height: 1.85;
+    letter-spacing: 0.01em;
+    color: var(--ink);
+  }
+
+  .intro__body {
+    display: grid;
+    gap: 18px;
+    margin-top: 34px;
+    max-width: 38em;
+  }
+
+  .intro__body p {
+    font-size: 13px;
+    line-height: 2.1;
+    color: var(--ink-dim);
+  }
+
+  .intro__facts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0 30px;
+    margin-top: clamp(42px, 6vw, 70px);
+    border-top: 1px solid var(--line);
+  }
+
+  .intro__facts div {
+    display: grid;
+    gap: 6px;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .intro__facts dt {
+    font-family: var(--mono);
+    font-size: 7px;
+    letter-spacing: 0.16em;
+    color: var(--ink-faint);
+  }
+
+  .intro__facts dd {
+    margin: 0;
+    font-family: var(--serif);
+    font-size: 14px;
+    letter-spacing: 0.03em;
+    color: var(--ink-soft);
+  }
+
+  /* ---------------- Beliefs ---------------- */
+  .beliefs {
+    position: relative;
+  }
+
+  .beliefs__head {
+    margin-bottom: clamp(48px, 6vw, 80px);
+  }
+
+  .beliefs__grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: clamp(16px, 1.8vw, 26px);
+  }
+
+  .belief {
+    position: relative;
+    perspective: 1100px;
+    min-height: 280px;
+  }
+
+  .belief--1 { grid-column: span 7; }
+  .belief--2 { grid-column: span 5; }
+  .belief--3 { grid-column: span 4; }
+  .belief--4 { grid-column: span 4; }
+  .belief--5 { grid-column: span 4; }
+
+  .belief__inner {
+    position: relative;
+    height: 100%;
+    padding: clamp(22px, 2.4vw, 38px);
+    border: 1px solid var(--line);
+    background:
+      linear-gradient(145deg, rgba(243, 238, 227, 0.035), transparent 55%),
+      var(--surface);
+    transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+    transform-style: preserve-3d;
+    transition: transform 0.5s var(--ease), border-color 0.4s ease, background 0.4s ease;
+    overflow: hidden;
+  }
+
+  .belief.is-tilting .belief__inner {
+    transition-duration: 0.15s;
+  }
+
+  .belief:hover .belief__inner {
+    border-color: color-mix(in srgb, var(--accent) 35%, transparent);
+    background:
+      linear-gradient(145deg, rgba(243, 238, 227, 0.06), transparent 55%),
+      var(--surface-2);
+  }
+
+  .belief--1 .belief__inner {
+    background:
+      radial-gradient(ellipse 70% 80% at 90% 10%, rgba(255, 147, 166, 0.11), transparent 65%),
+      var(--surface);
+  }
+
+  .belief__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .belief__no {
+    font-family: var(--display);
+    font-size: 13px;
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .belief__glyph {
+    font-size: 20px;
+    color: var(--ink-faint);
+    transition: color 0.4s ease, transform 0.6s var(--ease);
+  }
+
+  .belief:hover .belief__glyph {
+    color: var(--accent-warm);
+    transform: rotate(45deg);
+  }
+
+  .belief__title {
+    margin-top: clamp(40px, 5vw, 72px);
+    font-family: var(--serif);
+    font-size: clamp(21px, 2vw, 30px);
+    font-weight: 400;
+    line-height: 1.4;
+    letter-spacing: -0.02em;
+  }
+
+  .belief--1 .belief__title {
+    font-size: clamp(26px, 2.8vw, 44px);
+  }
+
+  .belief__text {
+    max-width: 34em;
+    margin-top: 16px;
+    font-size: 12px;
+    line-height: 1.95;
+    color: var(--ink-dim);
+  }
+
+  .belief__line {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.7s var(--ease);
+  }
+
+  .belief:hover .belief__line {
+    transform: scaleX(1);
+  }
+
+  /* ---------------- Creed ---------------- */
+  .creed {
+    position: relative;
+    overflow: hidden;
+    padding-block: clamp(90px, 12vw, 180px);
+    background: var(--paper);
+    color: var(--paper-ink);
+    border-block: 1px solid rgba(23, 22, 16, 0.16);
+  }
+
+  .creed__texture {
+    position: absolute;
+    inset: 0;
+    opacity: 0.45;
+    background-image: radial-gradient(rgba(23, 22, 16, 0.16) 0.6px, transparent 0.6px);
+    background-size: 6px 6px;
+    mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0.5), transparent 55%);
+    pointer-events: none;
+  }
+
+  .creed::before {
+    content: "宗";
+    position: absolute;
+    right: -3%;
+    top: 4%;
+    font-family: var(--serif);
+    font-size: clamp(240px, 42vw, 680px);
+    line-height: 1;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(23, 22, 16, 0.06);
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .creed .container {
+    position: relative;
+    z-index: 1;
+  }
+
+  .creed__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid rgba(23, 22, 16, 0.18);
+  }
+
+  .creed__head > span {
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: 0.16em;
+    color: var(--paper-dim);
+  }
+
+  .creed__quote {
+    position: relative;
+    margin-top: clamp(50px, 7vw, 100px);
+    padding-left: clamp(40px, 6vw, 100px);
+  }
+
+  .creed__mark {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    font-family: var(--display);
+    font-size: clamp(100px, 12vw, 190px);
+    font-style: italic;
+    line-height: 1;
+    color: rgba(168, 65, 85, 0.22);
+  }
+
+  .creed__quote p {
+    font-family: var(--serif);
+    font-size: clamp(30px, 4.6vw, 74px);
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: -0.03em;
+  }
+
+  .creed__quote em {
+    font-family: var(--display);
+    font-style: italic;
+    color: #a84155;
+    font-size: 1.06em;
+  }
+
+  .creed__foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 40px;
+    margin-top: clamp(42px, 6vw, 80px);
+    padding-left: clamp(40px, 6vw, 100px);
+  }
+
+  .creed__foot p {
+    font-family: var(--serif);
+    font-size: clamp(14px, 1.2vw, 17px);
+    line-height: 2.1;
+    color: var(--paper-dim);
+  }
+
+  .creed__seal {
+    flex: 0 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 88px;
+    height: 88px;
+    border: 1px solid rgba(168, 65, 85, 0.7);
+    color: #a84155;
+    font-family: var(--serif);
+    font-size: 25px;
+    writing-mode: vertical-rl;
+    transform: rotate(6deg);
+    place-items: center;
+    padding: 12px;
+  }
+
+  .creed__seal span:last-child {
+    margin-top: 14px;
+  }
+
+  /* ---------------- Rhythm ---------------- */
+  .rhythm {
+    position: relative;
+  }
+
+  .rhythm__steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(20px, 3vw, 40px);
+    margin-top: clamp(46px, 6vw, 80px);
+  }
+
+  .rhythm__step {
+    position: relative;
+    padding: clamp(24px, 2.8vw, 40px);
+    border: 1px solid var(--line);
+    background: linear-gradient(180deg, rgba(243, 238, 227, 0.025), transparent);
+    transition: background 0.4s ease, border-color 0.4s ease;
+  }
+
+  .rhythm__step:hover {
+    background: rgba(243, 238, 227, 0.04);
+    border-color: var(--line-strong);
+  }
+
+  .rhythm__step-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .rhythm__no {
+    font-family: var(--display);
+    font-size: clamp(44px, 4.6vw, 72px);
+    font-style: italic;
+    line-height: 0.9;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(243, 238, 227, 0.28);
+  }
+
+  .rhythm__label {
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+  }
+
+  .rhythm__title {
+    margin-top: clamp(40px, 5vw, 70px);
+    font-family: var(--serif);
+    font-size: clamp(24px, 2.4vw, 34px);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+  }
+
+  .rhythm__text {
+    margin-top: 14px;
+    font-size: 12px;
+    line-height: 2;
+    color: var(--ink-dim);
+  }
+
+  .rhythm__dot {
+    position: absolute;
+    right: clamp(24px, 2.8vw, 40px);
+    bottom: clamp(24px, 2.8vw, 40px);
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 12px rgba(255, 147, 166, 0.7);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .rhythm__step:hover .rhythm__dot {
+    opacity: 1;
+  }
+
+  .rhythm__note {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: clamp(34px, 4vw, 54px);
+    padding-top: 22px;
+    border-top: 1px solid var(--line);
+    font-family: var(--serif);
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    color: var(--ink-dim);
+  }
+
+  .rhythm__note-star {
+    color: var(--accent);
+    font-size: 16px;
+  }
+
+  /* ---------------- Disciplines ---------------- */
+  .disciplines__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(16px, 2vw, 28px);
+    margin-top: clamp(44px, 6vw, 76px);
+  }
+
+  .discipline {
+    position: relative;
+    display: block;
+    aspect-ratio: 3 / 4.3;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    background: var(--surface);
+  }
+
+  .discipline:nth-child(2) {
+    margin-top: clamp(30px, 5vw, 74px);
+  }
+
+  .discipline img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1.4s var(--ease), filter 0.8s ease;
+  }
+
+  .discipline:hover img {
+    transform: scale(1.06);
+    filter: brightness(1.06);
+  }
+
+  .discipline__shade {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(4, 5, 9, 0.14), transparent 35%, rgba(4, 5, 9, 0.88) 100%);
+  }
+
+  .discipline__no {
+    position: absolute;
+    top: 18px;
+    left: 18px;
+    font-family: var(--display);
+    font-size: 12px;
+    font-style: italic;
+    color: rgba(255, 253, 248, 0.62);
+  }
+
+  .discipline__content {
+    position: absolute;
+    left: clamp(18px, 2vw, 28px);
+    right: clamp(18px, 2vw, 28px);
+    bottom: clamp(20px, 2.4vw, 32px);
+    display: grid;
+    gap: 8px;
+    color: var(--white);
+  }
+
+  .discipline__en {
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: 0.22em;
+    color: var(--accent);
+  }
+
+  .discipline__title {
+    font-family: var(--serif);
+    font-size: clamp(30px, 3vw, 48px);
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+  }
+
+  .discipline__text {
+    max-width: 24em;
+    font-size: 11px;
+    line-height: 1.9;
+    color: rgba(255, 253, 248, 0.66);
+  }
+
+  .discipline__arrow {
+    position: absolute;
+    right: 18px;
+    bottom: 18px;
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border: 1px solid rgba(255, 253, 248, 0.34);
+    border-radius: 50%;
+    color: var(--white);
+    transition: background 0.4s ease, color 0.4s ease, transform 0.5s var(--ease);
+  }
+
+  .discipline:hover .discipline__arrow {
+    background: var(--white);
+    color: var(--bg);
+    transform: rotate(45deg);
+  }
+
+  .discipline__content {
+    right: 72px;
+  }
+
+  /* ---------------- Join ---------------- */
+  .about-join {
+    position: relative;
+    overflow: hidden;
+    padding-block: clamp(100px, 12vw, 200px);
+    border-top: 1px solid var(--line);
+    background:
+      radial-gradient(ellipse 50% 60% at 20% 40%, rgba(93, 59, 81, 0.16), transparent 70%),
+      var(--bg-deep);
+  }
+
+  .about-join__bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .about-join__bg::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: url("/art/starfield.svg") center / cover no-repeat;
+    opacity: 0.28;
+  }
+
+  .about-join__word {
+    position: absolute;
+    right: -2%;
+    bottom: -12%;
+    font-family: var(--display);
+    font-size: clamp(140px, 30vw, 500px);
+    font-style: italic;
+    line-height: 0.8;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(243, 238, 227, 0.065);
+  }
+
+  .about-join__orbit {
+    position: absolute;
+    top: 50%;
+    right: 10%;
+    width: min(44vw, 650px);
+    aspect-ratio: 1;
+    border: 1px dashed rgba(255, 147, 166, 0.16);
+    border-radius: 50%;
+    transform: translateY(-50%) rotateX(68deg);
+    animation: about-orbit 42s linear infinite;
+  }
+
+  @keyframes about-orbit {
+    to { transform: translateY(-50%) rotateX(68deg) rotate(360deg); }
+  }
+
+  .about-join__star {
+    position: absolute;
+    right: 14%;
+    top: 18%;
+    color: var(--accent-warm);
+    font-size: 22px;
+    animation: float 8s ease-in-out infinite;
+  }
+
+  .about-join .container {
+    position: relative;
+    z-index: 1;
+  }
+
+  .about-join__inner {
+    max-width: 900px;
+  }
+
+  .about-join__title {
+    margin-top: 26px;
+    font-family: var(--serif);
+    font-size: clamp(48px, 7vw, 116px);
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: -0.05em;
+  }
+
+  .about-join__title em {
+    font-family: var(--display);
+    font-style: italic;
+    font-size: 1.1em;
+    font-weight: 400;
+    color: var(--accent);
+    letter-spacing: -0.01em;
+  }
+
+  .about-join__lead {
+    max-width: 38em;
+    margin-top: clamp(26px, 3.5vw, 44px);
+    font-size: 14px;
+    line-height: 2.05;
+    color: var(--ink-dim);
+  }
+
+  .about-join__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 28px;
+  }
+
+  .about-join__tags span {
+    padding: 7px 14px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: 0.08em;
+    color: var(--ink-dim);
+  }
+
+  .about-join__info {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0 30px;
+    margin-top: clamp(40px, 5vw, 64px);
+    border-top: 1px solid var(--line);
+  }
+
+  .about-join__info div {
+    display: grid;
+    gap: 7px;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .about-join__info span {
+    font-family: var(--mono);
+    font-size: 7px;
+    letter-spacing: 0.14em;
+    color: var(--ink-faint);
+  }
+
+  .about-join__info strong {
+    font-family: var(--serif);
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.03em;
+    color: var(--ink-soft);
+  }
+
+  .about-join__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 24px;
+    margin-top: clamp(34px, 4vw, 50px);
+  }
+
+  @media (max-width: 1000px) {
+    .intro__grid {
+      grid-template-columns: 1fr;
+      gap: 50px;
+    }
+    .intro__heading {
+      position: static;
+    }
+    .intro__mark {
+      display: none;
+    }
+    .belief--1,
+    .belief--2 {
+      grid-column: span 6;
+    }
+    .belief--3,
+    .belief--4,
+    .belief--5 {
+      grid-column: span 4;
+    }
+    .rhythm__steps {
+      grid-template-columns: 1fr;
+    }
+    .rhythm__step {
+      min-height: auto;
+    }
+    .rhythm__title {
+      margin-top: 28px;
+    }
+    .disciplines__grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .discipline:nth-child(2) {
+      margin-top: 40px;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .intro__facts {
+      grid-template-columns: 1fr 1fr;
+    }
+    .beliefs__grid {
+      grid-template-columns: 1fr;
+    }
+    .belief--1,
+    .belief--2,
+    .belief--3,
+    .belief--4,
+    .belief--5 {
+      grid-column: 1 / -1;
+    }
+    .belief {
+      min-height: 240px;
+    }
+    .belief--1 .belief__title {
+      font-size: 28px;
+    }
+    .creed__head {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .creed__quote {
+      padding-left: 0;
+    }
+    .creed__mark {
+      position: static;
+      display: block;
+      height: 50px;
+      font-size: 100px;
+    }
+    .creed__quote p {
+      margin-top: -20px;
+    }
+    .creed__quote p br {
+      display: none;
+    }
+    .creed__foot {
+      flex-direction: column;
+      align-items: flex-start;
+      padding-left: 0;
+    }
+    .disciplines__grid {
+      grid-template-columns: 1fr;
+    }
+    .discipline:nth-child(2) {
+      margin-top: 0;
+    }
+    .discipline {
+      aspect-ratio: 4 / 4.4;
+    }
+    .about-join__info {
+      grid-template-columns: 1fr;
+    }
+    .about-join__orbit {
+      opacity: 0.5;
+    }
+    .about-join__word {
+      font-size: 35vw;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .intro__mark::before,
+    .intro__mark span,
+    .discipline img,
+    .about-join__orbit,
+    .about-join__star {
+      animation: none !important;
+    }
+  }
+</style>

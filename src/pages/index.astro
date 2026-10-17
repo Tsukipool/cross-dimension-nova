@@ -1,0 +1,39 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import Marquee from '../components/Marquee.astro';
+import Manifesto from '../components/Manifesto.astro';
+import FeaturedWorks from '../components/FeaturedWorks.astro';
+import AboutPreview from '../components/AboutPreview.astro';
+import Cinema from '../components/Cinema.astro';
+import NovelFeature from '../components/NovelFeature.astro';
+import Join from '../components/Join.astro';
+import { getWorks, type Work } from '../lib/works';
+
+const works = await getWorks();
+
+const selectedIds = [
+  'stardust-tram',
+  'heartbeat-at-worlds-end',
+  'deep-sea-post-office',
+  'first-night-screening',
+];
+const selected = selectedIds
+  .map((id) => works.find((work) => work.id === id))
+  .filter((work): work is Work => Boolean(work));
+
+const videos = works.filter((work) => work.data.type === 'video');
+const novel = works.find((work) => work.id === 'heartbeat-at-worlds-end');
+const secondNovel = works.find((work) => work.id === 'train-in-the-mist');
+---
+
+<BaseLayout page="home">
+  <Hero />
+  <Marquee />
+  <Manifesto />
+  <FeaturedWorks works={selected} total={works.length} />
+  <AboutPreview />
+  <Cinema videos={videos} />
+  {novel && <NovelFeature novel={novel} secondNovel={secondNovel} />}
+  <Join />
+</BaseLayout>

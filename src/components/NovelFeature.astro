@@ -1,0 +1,548 @@
+---
+import type { Work } from '../lib/works';
+import { workHref } from '../lib/works';
+import Icon from './Icon.astro';
+
+interface Props {
+  novel: Work;
+  secondNovel?: Work;
+}
+
+const { novel, secondNovel } = Astro.props;
+---
+
+<section class="novel" id="novel" aria-labelledby="novel-title">
+  <div class="novel__texture" aria-hidden="true"></div>
+  <span class="novel__kanji" aria-hidden="true">物語</span>
+
+  <div class="container">
+    <div class="novel__head" data-reveal>
+      <p class="eyebrow eyebrow--dark">WRITTEN WORDS / 04</p>
+      <span class="novel__head-note">SCROLL TO READ / 文字の次元</span>
+    </div>
+
+    <div class="novel__layout">
+      <div class="novel__copy">
+        <h2 class="novel__title" id="novel-title" data-reveal>
+          把没有说出口的话，<br />
+          写进<span class="novel__italic">故事</span>里。
+        </h2>
+
+        <blockquote class="novel__quote" data-reveal style="--reveal-delay: .1s">
+          <p>“{novel.data.quote}”</p>
+          <cite>—— {novel.data.title}</cite>
+        </blockquote>
+
+        <p class="novel__summary" data-reveal style="--reveal-delay: .16s">{novel.data.summary}</p>
+
+        <div class="novel__actions" data-reveal style="--reveal-delay: .22s">
+          <a class="btn btn--dark" href={workHref(novel)} data-nav-link data-magnetic>
+            <span>阅读短篇</span>
+            <span class="btn__dot"><Icon name="arrowUpRight" size={14} /></span>
+          </a>
+          <a class="text-link text-link--paper" href="/works/?type=novel" data-nav-link>
+            <span class="text-link__line">全部小说</span>
+            <Icon name="arrowRight" size={13} />
+          </a>
+        </div>
+
+        <dl class="novel__meta" data-reveal style="--reveal-delay: .28s">
+          <div><dt>AUTHOR</dt><dd>跨次元新星 · 文学组</dd></div>
+          <div><dt>READING</dt><dd>{novel.data.readingTime}</dd></div>
+          <div><dt>GENRE</dt><dd>{novel.data.tags.slice(0, 2).join(' / ')}</dd></div>
+        </dl>
+      </div>
+
+      <div class="novel__visual" data-reveal="right">
+        <div class="novel__stage" data-tilt>
+          <div class="novel__stack">
+            {secondNovel && (
+              <div class="novel__ghost" aria-hidden="true">
+                <img src={secondNovel.data.cover} alt="" loading="lazy" width="1200" height="1800" />
+              </div>
+            )}
+
+            <div class="novel__book" data-cursor-label="Read">
+              <span class="novel__pages novel__pages--one"></span>
+              <span class="novel__pages novel__pages--two"></span>
+              <div class="novel__cover">
+                <img src={novel.data.cover} alt={`${novel.data.title} 封面`} loading="lazy" width="1200" height="1800" />
+                <div class="novel__cover-wash"></div>
+                <span class="novel__cover-en">{novel.data.english}</span>
+                <div class="novel__cover-title">
+                  <span>{novel.data.title}</span>
+                  <small>N° {novel.data.serial} / CXN NOVEL</small>
+                </div>
+                <span class="novel__obi">跨次元新星 · 文学组</span>
+              </div>
+              <span class="novel__spine" aria-hidden="true"></span>
+            </div>
+
+            <span class="novel__seal" aria-hidden="true">読</span>
+            <span class="novel__float-star" aria-hidden="true">✦</span>
+          </div>
+        </div>
+        <p class="novel__vertical">ことばは、まだ遠い</p>
+        <p class="novel__art-note">NOVEL / SHORT STORY<br />PAPER IS A QUIET DIMENSION</p>
+      </div>
+    </div>
+
+    <div class="novel__foot" data-reveal>
+      <span class="novel__foot-line"></span>
+      <span>每一个没有寄出的句子，都值得被读完。</span>
+      <a href={workHref(novel)} data-nav-link aria-label={`阅读 ${novel.data.title}`}>
+        <Icon name="arrowRight" size={15} />
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .novel {
+    position: relative;
+    overflow: hidden;
+    background: var(--paper);
+    color: var(--paper-ink);
+    border-block: 1px solid rgba(23, 22, 16, 0.16);
+  }
+
+  .novel__texture {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.5;
+    background-image:
+      radial-gradient(rgba(23, 22, 16, 0.16) 0.6px, transparent 0.6px),
+      linear-gradient(90deg, transparent 49.8%, rgba(23, 22, 16, 0.035) 50%, transparent 50.2%);
+    background-size: 6px 6px, 100% 100%;
+    mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.35), transparent 40%, transparent 70%, rgba(0, 0, 0, 0.3));
+  }
+
+  .novel__kanji {
+    position: absolute;
+    top: 3%;
+    right: -2%;
+    font-family: var(--serif);
+    font-size: clamp(180px, 33vw, 540px);
+    line-height: 1;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(23, 22, 16, 0.08);
+    letter-spacing: -0.1em;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .novel > .container {
+    position: relative;
+    z-index: 1;
+    padding-block: clamp(90px, 11vw, 170px);
+  }
+
+  .novel__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding-bottom: clamp(40px, 5vw, 70px);
+    border-bottom: 1px solid rgba(23, 22, 16, 0.18);
+  }
+
+  .novel__head .eyebrow::before {
+    background: #a84155;
+    box-shadow: none;
+  }
+
+  .novel__head-note {
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: 0.18em;
+    color: var(--paper-dim);
+  }
+
+  .novel__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
+    gap: clamp(50px, 8vw, 140px);
+    align-items: center;
+    padding-top: clamp(50px, 7vw, 100px);
+  }
+
+  .novel__title {
+    font-family: var(--serif);
+    font-size: clamp(38px, 4.5vw, 72px);
+    font-weight: 400;
+    line-height: 1.28;
+    letter-spacing: -0.045em;
+  }
+
+  .novel__italic {
+    font-family: var(--display);
+    font-style: italic;
+    color: #a84155;
+    font-size: 1.08em;
+    padding-right: 0.06em;
+  }
+
+  .novel__quote {
+    margin-top: clamp(34px, 4.5vw, 64px);
+    padding-left: clamp(20px, 2vw, 30px);
+    border-left: 1px solid rgba(23, 22, 16, 0.28);
+  }
+
+  .novel__quote p {
+    font-family: var(--serif);
+    font-size: clamp(18px, 1.7vw, 25px);
+    line-height: 1.9;
+    letter-spacing: 0.02em;
+  }
+
+  .novel__quote cite {
+    display: block;
+    margin-top: 12px;
+    font-family: var(--mono);
+    font-size: 8px;
+    font-style: normal;
+    letter-spacing: 0.14em;
+    color: var(--paper-dim);
+  }
+
+  .novel__summary {
+    max-width: 36em;
+    margin-top: clamp(24px, 3vw, 38px);
+    font-size: 13px;
+    line-height: 2.05;
+    color: rgba(23, 22, 16, 0.64);
+  }
+
+  .novel__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 24px;
+    margin-top: clamp(30px, 4vw, 48px);
+  }
+
+  .novel__meta {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: clamp(38px, 5vw, 64px);
+    padding-top: 22px;
+    border-top: 1px solid rgba(23, 22, 16, 0.18);
+  }
+
+  .novel__meta div {
+    display: grid;
+    gap: 5px;
+  }
+
+  .novel__meta dt {
+    font-family: var(--mono);
+    font-size: 7px;
+    letter-spacing: 0.18em;
+    color: var(--paper-dim);
+  }
+
+  .novel__meta dd {
+    margin: 0;
+    font-family: var(--serif);
+    font-size: 12px;
+    letter-spacing: 0.04em;
+  }
+
+  .novel__visual {
+    position: relative;
+    display: grid;
+    justify-items: center;
+    perspective: 1500px;
+    padding-block: 20px;
+  }
+
+  .novel__stage {
+    position: relative;
+    width: min(420px, 78%);
+    transform-style: preserve-3d;
+    transition: transform 0.55s var(--ease);
+  }
+
+  .novel__stage.is-tilting {
+    transition-duration: 0.15s;
+  }
+
+  .novel__stack {
+    position: relative;
+    transform: rotateX(var(--rx, 0deg)) rotateY(calc(var(--ry, 0deg) - 8deg)) rotateZ(-2deg);
+    transform-style: preserve-3d;
+    transition: transform 0.55s var(--ease);
+  }
+
+  .novel__stage.is-tilting .novel__stack {
+    transition-duration: 0.15s;
+  }
+
+  .novel__ghost {
+    position: absolute;
+    top: 4%;
+    left: 12%;
+    width: 92%;
+    aspect-ratio: 2 / 3;
+    overflow: hidden;
+    border: 1px solid rgba(23, 22, 16, 0.2);
+    background: #302f29;
+    transform: translateZ(-38px) rotateZ(7deg);
+    box-shadow: 0 30px 60px rgba(23, 22, 16, 0.2);
+    opacity: 0.8;
+  }
+
+  .novel__ghost img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: saturate(0.7) brightness(0.72);
+  }
+
+  .novel__book {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    transform: translateZ(20px);
+    transform-style: preserve-3d;
+    filter: drop-shadow(0 40px 50px rgba(23, 22, 16, 0.25));
+  }
+
+  .novel__cover {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    border: 1px solid rgba(23, 22, 16, 0.22);
+    background: #1a1014;
+  }
+
+  .novel__cover > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1.5s var(--ease);
+  }
+
+  .novel__stage:hover .novel__cover > img {
+    transform: scale(1.035);
+  }
+
+  .novel__cover-wash {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgba(10, 5, 8, 0.34), transparent 32%, transparent 55%, rgba(10, 5, 8, 0.8)),
+      linear-gradient(90deg, rgba(0, 0, 0, 0.24), transparent 22%);
+  }
+
+  .novel__cover-en {
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    max-width: 80%;
+    font-family: var(--mono);
+    font-size: 7px;
+    line-height: 1.8;
+    letter-spacing: 0.18em;
+    color: rgba(255, 246, 230, 0.6);
+  }
+
+  .novel__cover-title {
+    position: absolute;
+    left: 24px;
+    right: 24px;
+    bottom: 28px;
+    display: grid;
+    gap: 10px;
+    color: #fff7e9;
+  }
+
+  .novel__cover-title > span {
+    font-family: var(--serif);
+    font-size: clamp(24px, 2.4vw, 34px);
+    line-height: 1.35;
+    letter-spacing: 0.04em;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.35);
+  }
+
+  .novel__cover-title small {
+    font-family: var(--mono);
+    font-size: 7px;
+    letter-spacing: 0.16em;
+    color: rgba(255, 247, 233, 0.5);
+  }
+
+  .novel__obi {
+    position: absolute;
+    top: 18%;
+    right: 0;
+    padding: 12px 8px;
+    background: #d9cbb4;
+    color: #2a2119;
+    font-family: var(--serif);
+    font-size: 8px;
+    letter-spacing: 0.24em;
+    writing-mode: vertical-rl;
+    box-shadow: 0 0 0 1px rgba(23, 22, 16, 0.2);
+  }
+
+  .novel__spine {
+    position: absolute;
+    top: 1%;
+    left: -13px;
+    width: 14px;
+    height: 98%;
+    background: linear-gradient(90deg, #1b1215, #3c2830 55%, #1a1114);
+    transform: rotateY(62deg);
+    transform-origin: right center;
+    box-shadow: inset 1px 0 rgba(255, 255, 255, 0.08);
+  }
+
+  .novel__pages {
+    position: absolute;
+    right: -7px;
+    top: 1.5%;
+    width: 9px;
+    height: 97%;
+    background: repeating-linear-gradient(180deg, #e5dcc9 0 1px, #b9ad98 1px 2px);
+    transform: rotateY(-55deg);
+    transform-origin: left center;
+    opacity: 0.8;
+  }
+  .novel__pages--two {
+    right: -4px;
+    width: 6px;
+    opacity: 0.45;
+  }
+
+  .novel__seal {
+    position: absolute;
+    right: -14%;
+    bottom: 12%;
+    display: grid;
+    place-items: center;
+    width: 58px;
+    height: 58px;
+    border: 1px solid #a84155;
+    border-radius: 50%;
+    color: #a84155;
+    font-family: var(--serif);
+    font-size: 23px;
+    transform: rotate(10deg) translateZ(60px);
+    opacity: 0.78;
+  }
+
+  .novel__float-star {
+    position: absolute;
+    top: -8%;
+    left: -9%;
+    font-size: 24px;
+    color: #a84155;
+    animation: float 7s ease-in-out infinite;
+  }
+
+  .novel__vertical {
+    position: absolute;
+    top: 8%;
+    right: 6%;
+    font-family: var(--serif);
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    writing-mode: vertical-rl;
+    color: var(--paper-dim);
+  }
+
+  .novel__art-note {
+    position: absolute;
+    bottom: 2%;
+    left: 4%;
+    font-family: var(--mono);
+    font-size: 7px;
+    line-height: 2;
+    letter-spacing: 0.14em;
+    color: var(--paper-dim);
+  }
+
+  .novel__foot {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-top: clamp(70px, 9vw, 120px);
+    font-family: var(--serif);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    color: var(--paper-dim);
+  }
+
+  .novel__foot-line {
+    width: 60px;
+    height: 1px;
+    background: rgba(23, 22, 16, 0.3);
+  }
+
+  .novel__foot a {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    margin-left: auto;
+    border: 1px solid rgba(23, 22, 16, 0.25);
+    border-radius: 50%;
+    transition: background 0.35s ease, color 0.35s ease, transform 0.4s var(--ease);
+  }
+
+  .novel__foot a:hover {
+    background: var(--paper-ink);
+    color: var(--paper);
+    transform: translateX(3px);
+  }
+
+  @media (max-width: 980px) {
+    .novel__layout {
+      grid-template-columns: 1fr;
+      gap: 80px;
+    }
+    .novel__visual {
+      order: 2;
+    }
+    .novel__copy {
+      order: 1;
+    }
+    .novel__stage {
+      width: min(380px, 75%);
+    }
+    .novel__art-note {
+      left: 10%;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .novel__head-note {
+      display: none;
+    }
+    .novel__meta {
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    .novel__stage {
+      width: min(300px, 82%);
+    }
+    .novel__vertical {
+      display: none;
+    }
+    .novel__seal {
+      right: -8%;
+      width: 46px;
+      height: 46px;
+      font-size: 18px;
+    }
+    .novel__actions {
+      gap: 18px;
+    }
+    .novel__foot > span:nth-child(2) {
+      font-size: 10px;
+    }
+  }
+</style>

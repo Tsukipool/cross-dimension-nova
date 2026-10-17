@@ -1,0 +1,48 @@
+---
+type IconName =
+  | 'arrowUpRight'
+  | 'arrowRight'
+  | 'arrowLeft'
+  | 'arrowDown'
+  | 'play'
+  | 'close'
+  | 'plus'
+  | 'menu'
+  | 'volume'
+  | 'pause';
+
+interface Props {
+  name: IconName;
+  size?: number;
+  class?: string;
+}
+
+const { name, size = 16, class: className = '' } = Astro.props;
+
+const icons: Record<IconName, string> = {
+  arrowUpRight: '<path d="M6 18L18 6M8 6h10v10"/>',
+  arrowRight: '<path d="M4 12h16M14 6l6 6-6 6"/>',
+  arrowLeft: '<path d="M20 12H4M10 6l-6 6 6 6"/>',
+  arrowDown: '<path d="M12 4v16M6 14l6 6 6-6"/>',
+  play: '<path d="M8 5.5v13l10.5-6.5Z" fill="currentColor" stroke="none"/>',
+  close: '<path d="M6 6l12 12M18 6L6 18"/>',
+  plus: '<path d="M12 4v16M4 12h16"/>',
+  menu: '<path d="M4 8h16M4 16h16"/>',
+  volume: '<path d="M5 9v6h4l5 4V5L9 9H5ZM18 9a4 4 0 0 1 0 6"/>',
+  pause: '<path d="M9 5v14M15 5v14"/>',
+};
+---
+
+<svg
+  class={className}
+  width={size}
+  height={size}
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.5"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+  set:html={icons[name]}
+/>

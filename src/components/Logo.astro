@@ -1,0 +1,82 @@
+---
+interface Props {
+  class?: string;
+  compact?: boolean;
+}
+
+const { class: className = '', compact = false } = Astro.props;
+---
+
+<a class:list={['brand', className]} href="/" aria-label="跨次元新星 · 首页" data-nav-link>
+  <svg class="brand__mark" viewBox="0 0 64 64" aria-hidden="true">
+    <circle cx="32" cy="32" r="20" fill="none" stroke="currentColor" stroke-opacity=".42" />
+    <ellipse cx="32" cy="32" rx="27" ry="10" fill="none" stroke="var(--accent)" stroke-opacity=".75" transform="rotate(-28 32 32)" />
+    <path d="M32 15l3 13.9L49 32l-14 3.1L32 49l-3-13.9L15 32l14-3.1Z" fill="currentColor" />
+    <circle cx="51" cy="20" r="2.5" fill="var(--accent)" />
+  </svg>
+  {
+    !compact && (
+      <span class="brand__type">
+        <span class="brand__cn">跨次元新星</span>
+        <span class="brand__en">CROSS-DIMENSION NOVA</span>
+      </span>
+    )
+  }
+</a>
+
+<style>
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    color: var(--ink);
+  }
+
+  .brand__mark {
+    width: 40px;
+    height: 40px;
+    flex: 0 0 auto;
+    transition: transform 1.2s var(--ease);
+  }
+
+  .brand:hover .brand__mark {
+    transform: rotate(180deg);
+  }
+
+  .brand__type {
+    display: grid;
+    gap: 3px;
+    line-height: 1;
+  }
+
+  .brand__cn {
+    font-family: var(--serif);
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    white-space: nowrap;
+  }
+
+  .brand__en {
+    font-family: var(--mono);
+    font-size: 7px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    color: var(--ink-faint);
+    white-space: nowrap;
+  }
+
+  @media (max-width: 480px) {
+    .brand__mark {
+      width: 34px;
+      height: 34px;
+    }
+    .brand__cn {
+      font-size: 13px;
+      letter-spacing: 0.16em;
+    }
+    .brand__en {
+      font-size: 6px;
+    }
+  }
+</style>

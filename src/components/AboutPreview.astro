@@ -1,0 +1,392 @@
+---
+import Icon from './Icon.astro';
+---
+
+<section class="about-preview section" id="about" aria-labelledby="about-title">
+  <div class="container">
+    <div class="about-preview__layout">
+      <div class="about-preview__visual" data-reveal="left">
+        <div class="about-preview__orbit" aria-hidden="true">
+          <span class="about-preview__orbit-ring"></span>
+          <span class="about-preview__orbit-dot"></span>
+        </div>
+
+        <figure class="about-preview__card about-preview__card--main">
+          <div class="about-preview__card-img">
+            <img src="/art/paper-moon-observatory.svg" alt="纸月亮观测站概念插画" loading="lazy" width="1200" height="1500" />
+          </div>
+          <figcaption>
+            <span>SCENE 005 / 纸月亮观测站</span>
+            <span>✦</span>
+          </figcaption>
+        </figure>
+
+        <figure class="about-preview__card about-preview__card--small">
+          <div class="about-preview__card-img">
+            <img src="/art/deep-sea-post-office.svg" alt="深海邮局概念插画" loading="lazy" width="1650" height="1100" />
+          </div>
+          <figcaption>
+            <span>SCENE 004 / 深海邮局</span>
+            <span>◉</span>
+          </figcaption>
+        </figure>
+
+        <div class="about-preview__badge" aria-hidden="true">
+          <span>美</span>
+          <i>BEAUTY IN FRAMES</i>
+        </div>
+
+        <p class="about-preview__vertical">アニメの美しさを、ともに見つける</p>
+      </div>
+
+      <div class="about-preview__copy">
+        <p class="eyebrow" data-reveal>ABOUT THE CLUB / 02</p>
+        <h2 class="about-preview__title" id="about-title" data-reveal style="--reveal-delay: .08s">
+          因为喜欢，<br />
+          <em>所以相聚。</em>
+        </h2>
+
+        <div class="about-preview__quote" data-reveal style="--reveal-delay: .14s">
+          <p>
+            以动画影像艺术为载体开展美育学习，引导社员赏析优秀动画作品，感受画面与叙事之美。尊重每个人的兴趣，自愿参与相关创意练习，在轻松的氛围中提升艺术审美。
+          </p>
+          <span class="about-preview__quote-mark">“</span>
+        </div>
+
+        <ul class="about-preview__values" data-reveal-group>
+          <li>
+            <span class="about-preview__no">01</span>
+            <strong>观看</strong>
+            <p>定期选取优秀动画作品，赏析其美术风格、镜头语言与故事叙事。</p>
+          </li>
+          <li>
+            <span class="about-preview__no">02</span>
+            <strong>尝试</strong>
+            <p>辅以轻松的图像创意练习，自愿参与，不做强制创作要求。</p>
+          </li>
+          <li>
+            <span class="about-preview__no">03</span>
+            <strong>分享</strong>
+            <p>定期开展内部交流，聊聊对画面、角色与故事的理解。</p>
+          </li>
+        </ul>
+
+        <div class="about-preview__footer" data-reveal>
+          <a class="btn" href="/about/" data-nav-link data-magnetic>
+            <span>认识我们</span>
+            <span class="btn__dot"><Icon name="arrowUpRight" size={14} /></span>
+          </a>
+          <p class="about-preview__meta">
+            指导老师 · 褚国梁<br />
+            艺术类社团 · EST. 2026
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about-preview {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .about-preview::before {
+    content: "";
+    position: absolute;
+    top: 10%;
+    left: -10%;
+    width: 50vw;
+    height: 50vw;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(122, 77, 97, 0.14), transparent 66%);
+    pointer-events: none;
+  }
+
+  .about-preview__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    gap: clamp(50px, 9vw, 160px);
+    align-items: center;
+  }
+
+  .about-preview__visual {
+    position: relative;
+    aspect-ratio: 1 / 1.04;
+    perspective: 1400px;
+  }
+
+  .about-preview__orbit {
+    position: absolute;
+    inset: 3% -2% 6% 3%;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .about-preview__orbit-ring {
+    position: absolute;
+    inset: 0;
+    border: 1px dashed rgba(243, 238, 227, 0.14);
+    border-radius: 50%;
+    animation: spin 60s linear infinite;
+  }
+
+  .about-preview__orbit-dot {
+    position: absolute;
+    top: 17%;
+    left: 7%;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 16px rgba(255, 147, 166, 0.8);
+  }
+
+  .about-preview__card {
+    position: absolute;
+    margin: 0;
+    padding: 8px 8px 10px;
+    background: rgba(15, 18, 26, 0.82);
+    border: 1px solid rgba(243, 238, 227, 0.16);
+    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.45);
+  }
+
+  .about-preview__card--main {
+    top: 4%;
+    left: 2%;
+    width: 64%;
+    transform: rotate(-4deg) rotateY(8deg);
+    z-index: 1;
+  }
+
+  .about-preview__card--small {
+    right: 2%;
+    bottom: 7%;
+    width: 47%;
+    transform: rotate(5deg) rotateY(-10deg);
+    z-index: 2;
+  }
+
+  .about-preview__card-img {
+    overflow: hidden;
+    background: var(--surface);
+  }
+
+  .about-preview__card--main .about-preview__card-img {
+    aspect-ratio: 4 / 5;
+  }
+
+  .about-preview__card--small .about-preview__card-img {
+    aspect-ratio: 4 / 3;
+  }
+
+  .about-preview__card-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1.6s var(--ease);
+  }
+
+  .about-preview__card:hover .about-preview__card-img img {
+    transform: scale(1.04);
+  }
+
+  .about-preview__card figcaption {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 8px;
+    font-family: var(--mono);
+    font-size: clamp(5px, 0.5vw, 8px);
+    letter-spacing: 0.1em;
+    color: var(--ink-faint);
+    white-space: nowrap;
+  }
+
+  .about-preview__card figcaption span:last-child {
+    color: var(--accent);
+  }
+
+  .about-preview__badge {
+    position: absolute;
+    top: 8%;
+    right: 0;
+    z-index: 3;
+    display: grid;
+    place-items: center;
+    width: clamp(70px, 7vw, 104px);
+    aspect-ratio: 1;
+    border: 1px solid var(--line-strong);
+    border-radius: 50%;
+    background: rgba(7, 8, 13, 0.84);
+    transform: rotate(8deg);
+  }
+
+  .about-preview__badge span {
+    font-family: var(--serif);
+    font-size: clamp(24px, 2.4vw, 34px);
+    line-height: 1;
+    color: var(--accent);
+  }
+
+  .about-preview__badge i {
+    font-family: var(--mono);
+    font-size: 5px;
+    font-style: normal;
+    letter-spacing: 0.16em;
+    color: var(--ink-faint);
+  }
+
+  .about-preview__vertical {
+    position: absolute;
+    left: -30px;
+    bottom: 14%;
+    font-family: var(--serif);
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    writing-mode: vertical-rl;
+    color: var(--ink-faint);
+  }
+
+  .about-preview__copy {
+    padding-block: 20px;
+  }
+
+  .about-preview__title {
+    margin-top: 24px;
+    font-family: var(--serif);
+    font-size: clamp(42px, 5.4vw, 82px);
+    font-weight: 400;
+    line-height: 1.25;
+    letter-spacing: -0.04em;
+  }
+
+  .about-preview__title em {
+    font-family: var(--display);
+    font-size: 1.08em;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--accent);
+  }
+
+  .about-preview__quote {
+    position: relative;
+    margin-top: clamp(30px, 4vw, 52px);
+    padding-left: 26px;
+    border-left: 1px solid var(--line-strong);
+  }
+
+  .about-preview__quote p {
+    max-width: 36em;
+    font-size: 14px;
+    line-height: 2.1;
+    color: var(--ink-dim);
+  }
+
+  .about-preview__quote-mark {
+    position: absolute;
+    top: -22px;
+    left: 14px;
+    font-family: var(--display);
+    font-size: 64px;
+    font-style: italic;
+    line-height: 1;
+    color: rgba(255, 147, 166, 0.22);
+    pointer-events: none;
+  }
+
+  .about-preview__values {
+    margin-top: clamp(34px, 4.5vw, 60px);
+    border-top: 1px solid var(--line);
+  }
+
+  .about-preview__values li {
+    display: grid;
+    grid-template-columns: 40px 78px minmax(0, 1fr);
+    gap: 16px;
+    align-items: baseline;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--line);
+    transition: padding-left 0.45s var(--ease);
+  }
+
+  .about-preview__values li:hover {
+    padding-left: 8px;
+  }
+
+  .about-preview__no {
+    font-family: var(--display);
+    font-size: 12px;
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .about-preview__values strong {
+    font-family: var(--serif);
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+  }
+
+  .about-preview__values p {
+    font-size: 12px;
+    line-height: 1.9;
+    color: var(--ink-dim);
+  }
+
+  .about-preview__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    margin-top: clamp(34px, 4vw, 54px);
+  }
+
+  .about-preview__meta {
+    text-align: right;
+    font-family: var(--mono);
+    font-size: 8px;
+    line-height: 2;
+    letter-spacing: 0.1em;
+    color: var(--ink-faint);
+  }
+
+  @media (max-width: 980px) {
+    .about-preview__layout {
+      grid-template-columns: 1fr;
+      gap: 64px;
+    }
+    .about-preview__visual {
+      width: min(620px, 88%);
+      margin-inline: auto;
+      order: 2;
+    }
+    .about-preview__copy {
+      order: 1;
+    }
+    .about-preview__vertical {
+      display: none;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .about-preview__values li {
+      grid-template-columns: 32px 60px minmax(0, 1fr);
+      gap: 10px;
+    }
+    .about-preview__footer {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .about-preview__meta {
+      text-align: left;
+    }
+    .about-preview__badge {
+      top: 2%;
+      right: 2%;
+    }
+    .about-preview__card {
+      padding: 5px 5px 7px;
+    }
+  }
+</style>

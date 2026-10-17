@@ -1,0 +1,1508 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
+import ParticleField from '../../components/ParticleField.astro';
+import { getWorks, getNextWork, typeMeta, type Work } from '../../lib/works';
+import { render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const works = await getWorks();
+  return works.map((work) => ({
+    params: { slug: work.id },
+    props: { work, works },
+  }));
+}
+
+interface Props {
+  work: Work;
+  works: Work[];
+}
+
+const { work, works } = Astro.props;
+const { Content, headings } = await render(work);
+
+const meta = typeMeta[work.data.type];
+const next = getNextWork(works, work.id);
+const isNovel = work.data.type === 'novel';
+const isVideo = work.data.type === 'video';
+const coverRatio = isVideo ? 'landscape' : isNovel ? 'book' : 'portrait';
+const chapters = headings.filter((heading) => heading.depth === 2);
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': isNovel ? 'ShortStory' : isVideo ? 'VideoObject' : 'CreativeWork',
+  name: work.data.title,
+  alternateName: work.data.english,
+  description: work.data.summary,
+  genre: work.data.category,
+  creator: { '@type': 'Organization', name: '跨次元新星' },
+  datePublished: work.data.date,
+  image: new URL(work.data.cover, Astro.site).href,
+  ...(isVideo && work.data.video
+    ? {
+        contentUrl: new URL(work.data.video, Astro.site).href,
+        thumbnailUrl: new URL(work.data.cover, Astro.site).href,
+      }
+    : {}),
+};
+---
+
+<BaseLayout
+  title={work.data.title}
+  description={work.data.summary}
+  image={work.data.cover}
+  page={`work-${work.data.type}`}
+>
+  {isNovel && (
+    <div class="reading-bar" aria-hidden="true">
+      <span data-reading-progress></span>
+    </div>
+  )}
+
+  <article class="work" style={`--work-accent: ${work.data.accent}`}>
+    <header class="work-hero">
+      <div class="work-hero__ambient" aria-hidden="true">
+        <img src={work.data.cover} alt="" loading="eager" />
+        <span></span>
+      </div>
+
+      <ParticleField
+        variant="dust"
+        density={0.55}
+        accent={work.data.accent}
+        opacity={0.5}
+        class="work-hero__particles"
+      />
+
+      <div class="container">
+        <div class="work-crumb" data-reveal>
+          <a href="/works/" data-nav-link class="work-crumb__back">
+            <Icon name="arrowLeft" size={13} />
+            <span>作品档案</span>
+          </a>
+          <div class="work-crumb__meta">
+            <span>{meta.en}</span>
+            <span class="work-crumb__dot"></span>
+            <span>N° {work.data.serial}</span>
+            <span class="work-crumb__dot"></span>
+            <span>{work.data.year}</span>
+          </div>
+        </div>
+
+        <div class="work-hero__grid">
+          <div class="work-hero__copy">
+            <p class="eyebrow" data-reveal>{work.data.category} / {meta.label}</p>
+            <h1 class="work-hero__title" data-reveal style="--reveal-delay: .06s">{work.data.title}</h1>
+            <p class="work-hero__english" data-reveal style="--reveal-delay: .1s">{work.data.english}</p>
+            <p class="work-hero__summary" data-reveal style="--reveal-delay: .14s">{work.data.summary}</p>
+
+            <div class="work-hero__facts" data-reveal style="--reveal-delay: .18s">
+              <div><span>YEAR</span><strong>{work.data.year}</strong></div>
+              <div>
+                <span>{isNovel ? 'READING TIME' : isVideo ? 'DURATION' : 'FORMAT'}</span>
+                <strong>{isNovel ? work.data.readingTime : isVideo ? work.data.duration : 'DIGITAL ART'}</strong>
+              </div>
+              <div><span>CATEGORY</span><strong>{meta.label}</strong></div>
+            </div>
+
+            <div class="work-hero__tags" data-reveal style="--reveal-delay: .22s">
+              {work.data.tags.map((tag) => <span>{tag}</span>)}
+            </div>
+          </div>
+
+          <div class="work-hero__visual" data-reveal="scale" style="--reveal-delay: .1s">
+            <div class="work-hero__cover-tilt" data-tilt>
+              <div class:list={['work-cover', `work-cover--${coverRatio}`]}>
+                <img src={work.data.cover} alt={`${work.data.title} 主视觉`} width="1200" height="1500" loading="eager" />
+                <span class="work-cover__shade"></span>
+
+                {isVideo && (
+                  <button
+                    class="work-cover__play"
+                    type="button"
+                    data-open-video
+                    data-video-src={work.data.video}
+                    data-video-poster={work.data.cover}
+                    data-cursor-label="Play"
+                    aria-label={`播放 ${work.data.title}`}
+                  >
+                    <span class="work-cover__play-ring">
+                      <svg viewBox="0 0 120 120" aria-hidden="true">
+                        <defs>
+                          <path id="work-play-path" d="M60,60 m-46,0 a46,46 0 1,1 92,0 a46,46 0 1,1 -92,0" />
+                        </defs>
+                        <text>
+                          <textPath href="#work-play-path">PLAY THE FILM · CROSS-DIMENSION NOVA · </textPath>
+                        </text>
+                      </svg>
+                    </span>
+                    <span class="work-cover__play-center"><Icon name="play" size={22} /></span>
+                  </button>
+                )}
+
+                <span class="work-cover__serial">N° {work.data.serial}</span>
+                <span class="work-cover__label">{meta.en} / CXN</span>
+              </div>
+            </div>
+            <span class="work-hero__vertical" aria-hidden="true">{work.data.english}</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section class:list={['work-content', { 'work-content--paper': isNovel }]} aria-label="作品内容">
+      <div class="container">
+        <div class="work-content__grid">
+          <aside class="work-aside">
+            <div class="work-aside__sticky">
+              <p class="eyebrow" data-reveal>DETAILS / 作品信息</p>
+
+              <dl class="work-info" data-reveal style="--reveal-delay: .06s">
+                <div><dt>类别</dt><dd>{work.data.category}</dd></div>
+                <div><dt>年份</dt><dd>{work.data.year}</dd></div>
+                <div><dt>编号</dt><dd>N° {work.data.serial}</dd></div>
+                {isVideo && <div><dt>片长</dt><dd>{work.data.duration} · 无声</dd></div>}
+                {isNovel && <div><dt>阅读</dt><dd>{work.data.readingTime}</dd></div>}
+              </dl>
+
+              {work.data.credits.length > 0 && (
+                <div class="work-credits" data-reveal style="--reveal-delay: .1s">
+                  <p class="work-aside__label">CREDITS</p>
+                  {work.data.credits.map((credit) => (
+                    <div>
+                      <span>{credit.role}</span>
+                      <strong>{credit.name}</strong>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {isNovel && (
+                <div class="work-progress" data-reveal style="--reveal-delay: .12s">
+                  <p class="work-aside__label">READING PROGRESS</p>
+                  <div class="work-progress__row">
+                    <span class="work-progress__line"><span></span></span>
+                    <strong data-reading-percent>0%</strong>
+                  </div>
+                </div>
+              )}
+
+              {isNovel && chapters.length > 0 && (
+                <nav class="work-toc" aria-label="章节导航" data-reveal style="--reveal-delay: .16s">
+                  <p class="work-aside__label">CHAPTERS</p>
+                  {chapters.map((chapter, index) => (
+                    <a href={`#${chapter.slug}`}>
+                      <span>{String(index + 1).padStart(2, '0')}</span>
+                      <span>{chapter.text}</span>
+                    </a>
+                  ))}
+                </nav>
+              )}
+
+              <a class="work-back-link" href="/works/" data-nav-link data-reveal style="--reveal-delay: .18s">
+                <Icon name="arrowLeft" size={13} />
+                <span>返回全部作品</span>
+              </a>
+            </div>
+          </aside>
+
+          <div class="work-main">
+            {isVideo && work.data.video && (
+              <div class="work-player" data-reveal>
+                <div class="work-player__head">
+                  <span class="work-player__label"><i></i> SCREENING / 放映</span>
+                  <button
+                    type="button"
+                    class="work-player__theater"
+                    data-open-video
+                    data-video-src={work.data.video}
+                    data-video-poster={work.data.cover}
+                  >
+                    剧场模式 <Icon name="arrowUpRight" size={12} />
+                  </button>
+                </div>
+                <div class="work-player__frame">
+                  <video
+                    controls
+                    playsinline
+                    preload="metadata"
+                    poster={work.data.cover}
+                    aria-label={`${work.data.title} 概念短片`}
+                  >
+                    <source src={work.data.video} type="video/mp4" />
+                    <p>你的浏览器不支持视频播放。</p>
+                  </video>
+                </div>
+                <div class="work-player__meta">
+                  <span>{work.data.title} / {work.data.english}</span>
+                  <span>{work.data.duration} · 无声影像</span>
+                </div>
+              </div>
+            )}
+
+            <div class:list={['prose', { 'prose--novel': isNovel, 'prose--work': !isNovel }]} data-article data-reveal="fade">
+              <Content />
+            </div>
+
+            {work.data.gallery.length > 0 && (
+              <section class="work-gallery" aria-labelledby="gallery-title">
+                <div class="work-gallery__head" data-reveal>
+                  <div>
+                    <p class="eyebrow">VISUAL NOTES / 05</p>
+                    <h2 class="work-gallery__title" id="gallery-title">{isNovel ? '内页插图' : isVideo ? '影像截帧' : '画面细节'}</h2>
+                  </div>
+                  <span class="work-gallery__hint">点击放大 / CLICK TO ZOOM</span>
+                </div>
+
+                <div class="work-gallery__grid" data-lightbox-group data-reveal>
+                  {work.data.gallery.map((item, index) => (
+                    <button
+                      class="work-gallery__item"
+                      type="button"
+                      data-lightbox-item
+                      data-src={item.src}
+                      data-alt={item.alt}
+                      data-caption={item.caption || item.alt}
+                      data-cursor-label="Zoom"
+                      aria-label={`放大查看：${item.alt}`}
+                    >
+                      <span class="work-gallery__media">
+                        <img src={item.src} alt={item.alt} loading="lazy" width="1600" height="1200" />
+                        <span class="work-gallery__overlay">
+                          <span class="work-gallery__count">{String(index + 1).padStart(2, '0')}</span>
+                          <span class="work-gallery__zoom"><Icon name="plus" size={16} /></span>
+                        </span>
+                      </span>
+                      <span class="work-gallery__caption">{item.caption || item.alt}</span>
+                    </button>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            <div class="work-end" data-reveal>
+              <span class="work-end__line"></span>
+              <span>END OF WORK · N° {work.data.serial}</span>
+              <span class="work-end__line"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="next-work" aria-labelledby="next-work-title">
+      <a class="next-work__link" href={`/works/${next.id}/`} data-nav-link data-cursor-label="Next">
+        <span class="next-work__bg" aria-hidden="true">
+          <img src={next.data.cover} alt="" loading="lazy" />
+        </span>
+        <span class="next-work__inner container">
+          <span class="next-work__kicker">
+            <span class="eyebrow">NEXT WORK / 下一件作品</span>
+            <span>N° {next.data.serial}</span>
+          </span>
+          <span class="next-work__row">
+            <span class="next-work__copy">
+              <span class="next-work__category">{typeMeta[next.data.type].label} · {next.data.year}</span>
+              <span class="next-work__title" id="next-work-title">{next.data.title}</span>
+              <span class="next-work__en">{next.data.english}</span>
+            </span>
+            <span class="next-work__arrow">
+              <Icon name="arrowRight" size={28} />
+            </span>
+          </span>
+        </span>
+      </a>
+    </section>
+  </article>
+
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+</BaseLayout>
+
+<style>
+  .reading-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 960;
+    height: 2px;
+    background: rgba(243, 238, 227, 0.08);
+  }
+
+  .reading-bar span {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    will-change: transform;
+  }
+
+  .work {
+    --work-accent: var(--accent);
+  }
+
+  .work-hero {
+    position: relative;
+    overflow: hidden;
+    padding-top: calc(var(--nav-h) + clamp(28px, 4vw, 56px));
+    padding-bottom: clamp(70px, 8vw, 130px);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .work-hero__particles {
+    inset: 0;
+    z-index: 1;
+  }
+
+  .work-hero__ambient {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .work-hero__ambient img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: saturate(1.1);
+    transform: scale(1.12);
+    opacity: 0.14;
+  }
+
+  .work-hero__ambient span {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 60% at 70% 35%, color-mix(in srgb, var(--work-accent) 12%, transparent), transparent 70%),
+      linear-gradient(180deg, rgba(6, 7, 12, 0.62), rgba(6, 7, 12, 0.88) 65%, #07080d);
+  }
+
+  .work-hero__ambient::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: url("/art/starfield.svg") center / cover no-repeat;
+    opacity: 0.35;
+  }
+
+  .work-crumb {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    padding-bottom: 22px;
+    border-bottom: 1px solid var(--line);
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: 0.16em;
+    color: var(--ink-faint);
+  }
+
+  .work-crumb__back {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--ink-dim);
+    transition: color 0.35s ease;
+  }
+
+  .work-crumb__back:hover {
+    color: var(--ink);
+  }
+
+  .work-crumb__meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .work-crumb__dot {
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: var(--work-accent);
+  }
+
+  .work-hero__grid {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr);
+    gap: clamp(42px, 7vw, 120px);
+    align-items: center;
+    padding-top: clamp(44px, 7vw, 100px);
+  }
+
+  .work-hero__title {
+    margin-top: 22px;
+    font-family: var(--serif);
+    font-size: clamp(44px, 5.6vw, 92px);
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: -0.045em;
+  }
+
+  .work-hero__english {
+    margin-top: 14px;
+    font-family: var(--display);
+    font-size: clamp(19px, 1.8vw, 28px);
+    font-style: italic;
+    letter-spacing: 0.02em;
+    color: var(--work-accent);
+  }
+
+  .work-hero__summary {
+    max-width: 34em;
+    margin-top: clamp(22px, 3vw, 34px);
+    font-size: 14px;
+    line-height: 2;
+    color: var(--ink-dim);
+  }
+
+  .work-hero__facts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: clamp(30px, 4vw, 50px);
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+  }
+
+  .work-hero__facts div {
+    display: grid;
+    gap: 6px;
+  }
+
+  .work-hero__facts span {
+    font-family: var(--mono);
+    font-size: 7px;
+    letter-spacing: 0.18em;
+    color: var(--ink-faint);
+  }
+
+  .work-hero__facts strong {
+    font-family: var(--serif);
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 0.03em;
+    color: var(--ink-soft);
+  }
+
+  .work-hero__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 22px;
+  }
+
+  .work-hero__tags span {
+    padding: 6px 12px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: 0.08em;
+    color: var(--ink-dim);
+  }
+
+  .work-hero__visual {
+    position: relative;
+    perspective: 1400px;
+    justify-self: center;
+    width: min(100%, 440px);
+  }
+
+  .work-hero__cover-tilt {
+    transform: rotateX(var(--rx, 0deg)) rotateY(calc(var(--ry, 0deg) + 3deg)) rotate(1.5deg);
+    transform-style: preserve-3d;
+    transition: transform 0.55s var(--ease);
+  }
+
+  .work-hero__cover-tilt.is-tilting {
+    transition-duration: 0.15s;
+  }
+
+  .work-cover {
+    position: relative;
+    padding: 8px;
+    background: rgba(15, 18, 26, 0.82);
+    border: 1px solid rgba(243, 238, 227, 0.18);
+    box-shadow:
+      0 48px 110px rgba(0, 0, 0, 0.58),
+      0 0 80px color-mix(in srgb, var(--work-accent) 9%, transparent);
+    overflow: hidden;
+  }
+
+  .work-cover--portrait {
+    aspect-ratio: 4 / 5;
+  }
+  .work-cover--book {
+    aspect-ratio: 3 / 4;
+  }
+  .work-cover--landscape {
+    aspect-ratio: 16 / 10;
+  }
+
+  .work-cover > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1.6s var(--ease);
+  }
+
+  .work-hero__cover-tilt:hover .work-cover > img {
+    transform: scale(1.035);
+  }
+
+  .work-cover__shade {
+    position: absolute;
+    inset: 8px;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.05) 55%, rgba(0, 0, 0, 0.44));
+    pointer-events: none;
+  }
+
+  .work-cover__serial {
+    position: absolute;
+    left: 20px;
+    bottom: 18px;
+    font-family: var(--display);
+    font-size: 13px;
+    font-style: italic;
+    color: rgba(255, 253, 248, 0.7);
+  }
+
+  .work-cover__label {
+    position: absolute;
+    right: 20px;
+    top: 18px;
+    font-family: var(--mono);
+    font-size: 7px;
+    letter-spacing: 0.14em;
+    color: rgba(255, 253, 248, 0.5);
+  }
+
+  .work-cover__play {
+    position: absolute;
+    inset: 8px;
+    display: grid;
+    place-items: center;
+    z-index: 2;
+    cursor: pointer;
+  }
+
+  .work-cover__play-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 118px;
+    aspect-ratio: 1;
+    transform: translate(-50%, -50%);
+    color: rgba(255, 253, 248, 0.64);
+  }
+
+  .work-cover__play-ring svg {
+    width: 100%;
+    height: 100%;
+    animation: spin 24s linear infinite;
+  }
+
+  .work-cover__play-ring text {
+    font-family: var(--mono);
+    font-size: 8.2px;
+    letter-spacing: 0.2em;
+    fill: currentColor;
+  }
+
+  .work-cover__play-center {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: var(--white);
+    color: #0c0c12;
+    transition: background 0.35s ease, transform 0.45s var(--ease);
+  }
+
+  .work-cover__play-center svg {
+    margin-left: 3px;
+  }
+
+  .work-cover__play:hover .work-cover__play-center {
+    background: var(--accent);
+    transform: scale(1.08);
+  }
+
+  .work-hero__vertical {
+    position: absolute;
+    top: 5%;
+    right: -45px;
+    font-family: var(--mono);
+    font-size: 7px;
+    letter-spacing: 0.24em;
+    writing-mode: vertical-rl;
+    color: var(--ink-faint);
+  }
+
+  /* ---------------- Content ---------------- */
+  .work-content {
+    position: relative;
+    padding-block: clamp(70px, 9vw, 140px);
+    background:
+      radial-gradient(ellipse 40% 45% at 90% 12%, color-mix(in srgb, var(--work-accent) 5%, transparent), transparent 70%),
+      var(--bg);
+  }
+
+  .work-content--paper {
+    background:
+      radial-gradient(rgba(23, 22, 16, 0.14) 0.6px, transparent 0.6px),
+      var(--paper);
+    background-size: 6px 6px, auto;
+    color: var(--paper-ink);
+    border-block: 1px solid rgba(23, 22, 16, 0.16);
+  }
+
+  .work-content__grid {
+    display: grid;
+    grid-template-columns: minmax(190px, 260px) minmax(0, 1fr);
+    gap: clamp(44px, 7vw, 120px);
+    align-items: start;
+  }
+
+  .work-aside {
+    align-self: stretch;
+  }
+
+  .work-aside__sticky {
+    position: sticky;
+    top: calc(var(--nav-h) + 32px);
+  }
+
+  .work-info {
+    display: grid;
+    gap: 0;
+    margin-top: 28px;
+    border-top: 1px solid var(--line);
+  }
+
+  .work-content--paper .work-info {
+    border-color: rgba(23, 22, 16, 0.16);
+  }
+
+  .work-info div {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 11px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .work-content--paper .work-info div {
+    border-color: rgba(23, 22, 16, 0.13);
+  }
+
+  .work-info dt {
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: 0.1em;
+    color: var(--ink-faint);
+  }
+
+  .work-content--paper .work-info dt {
+    color: var(--paper-dim);
+  }
+
+  .work-info dd {
+    margin: 0;
+    font-family: var(--serif);
+    font-size: 12px;
+    text-align: right;
+    letter-spacing: 0.03em;
+    color: var(--ink-soft);
+  }
+
+  .work-content--paper .work-info dd {
+    color: var(--paper-ink);
+  }
+
+  .work-aside__label {
+    margin-bottom: 14px;
+    font-family: var(--mono);
+    font-size: 7px;
+    letter-spacing: 0.18em;
+    color: var(--ink-faint);
+  }
+
+  .work-content--paper .work-aside__label {
+    color: var(--paper-dim);
+  }
+
+  .work-credits {
+    margin-top: 28px;
+    padding-top: 22px;
+    border-top: 1px solid var(--line);
+  }
+
+  .work-content--paper .work-credits {
+    border-color: rgba(23, 22, 16, 0.16);
+  }
+
+  .work-credits div {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 7px 0;
+    font-size: 11px;
+  }
+
+  .work-credits span {
+    color: var(--ink-faint);
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: 0.06em;
+  }
+
+  .work-content--paper .work-credits span {
+    color: var(--paper-dim);
+  }
+
+  .work-credits strong {
+    font-weight: 400;
+    color: var(--ink-soft);
+    font-family: var(--serif);
+    text-align: right;
+  }
+
+  .work-content--paper .work-credits strong {
+    color: var(--paper-ink);
+  }
+
+  .work-progress {
+    margin-top: 28px;
+    padding-top: 22px;
+    border-top: 1px solid rgba(23, 22, 16, 0.16);
+  }
+
+  .work-progress__row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .work-progress__line {
+    flex: 1;
+    height: 1px;
+    background: rgba(23, 22, 16, 0.18);
+    overflow: hidden;
+  }
+
+  .work-progress__line span {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: #a84155;
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+
+  .work-progress strong {
+    font-family: var(--display);
+    font-size: 13px;
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  .work-toc {
+    display: grid;
+    gap: 0;
+    margin-top: 28px;
+    padding-top: 22px;
+    border-top: 1px solid rgba(23, 22, 16, 0.16);
+  }
+
+  .work-toc a {
+    display: grid;
+    grid-template-columns: 26px 1fr;
+    gap: 6px;
+    padding: 8px 0;
+    font-family: var(--serif);
+    font-size: 11px;
+    line-height: 1.5;
+    color: var(--paper-dim);
+    transition: color 0.3s ease, padding-left 0.3s var(--ease);
+  }
+
+  .work-toc a span:first-child {
+    font-family: var(--display);
+    font-style: italic;
+    font-size: 10px;
+    color: #a84155;
+  }
+
+  .work-toc a:hover {
+    color: var(--paper-ink);
+    padding-left: 4px;
+  }
+
+  .work-back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 34px;
+    font-family: var(--serif);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--ink-dim);
+    transition: color 0.3s ease;
+  }
+
+  .work-content--paper .work-back-link {
+    color: var(--paper-dim);
+  }
+
+  .work-back-link:hover {
+    color: var(--ink);
+  }
+  .work-content--paper .work-back-link:hover {
+    color: var(--paper-ink);
+  }
+
+  .work-main {
+    min-width: 0;
+    max-width: 960px;
+  }
+
+  /* ---------------- Video player ---------------- */
+  .work-player {
+    margin-bottom: clamp(54px, 7vw, 90px);
+  }
+
+  .work-player__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 16px;
+  }
+
+  .work-player__label {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: 0.18em;
+    color: var(--ink-dim);
+  }
+
+  .work-player__label i {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #ff6275;
+    box-shadow: 0 0 9px rgba(255, 98, 117, 0.8);
+    animation: work-rec 2.2s ease-in-out infinite;
+  }
+
+  @keyframes work-rec {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.25; }
+  }
+
+  .work-player__theater {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: 0.12em;
+    color: var(--ink-faint);
+    transition: color 0.3s ease;
+  }
+
+  .work-player__theater:hover {
+    color: var(--ink);
+  }
+
+  .work-player__frame {
+    position: relative;
+    border: 1px solid var(--line-strong);
+    background: #000;
+    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.4);
+  }
+
+  .work-player__frame::before,
+  .work-player__frame::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--work-accent);
+    opacity: 0.55;
+    z-index: 2;
+  }
+  .work-player__frame::before {
+    top: 0;
+  }
+  .work-player__frame::after {
+    bottom: 0;
+  }
+
+  .work-player__frame video {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #000;
+  }
+
+  .work-player__meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding-top: 10px;
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: 0.1em;
+    color: var(--ink-faint);
+  }
+
+  /* ---------------- Prose ---------------- */
+  .prose {
+    max-width: 760px;
+    font-family: var(--sans);
+    font-size: 15.5px;
+    line-height: 2.05;
+    color: var(--ink-soft);
+  }
+
+  .prose :global(p) {
+    margin-block: 1.45em;
+  }
+
+  .prose :global(h2) {
+    position: relative;
+    margin-top: 3.2em;
+    margin-bottom: 1.2em;
+    padding-top: 1.2em;
+    border-top: 1px solid var(--line);
+    font-family: var(--serif);
+    font-size: clamp(24px, 2.4vw, 34px);
+    font-weight: 400;
+    line-height: 1.4;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    counter-increment: chapter;
+  }
+
+  .prose :global(h2)::before {
+    content: "0" counter(chapter);
+    position: absolute;
+    top: 1.55em;
+    left: -58px;
+    font-family: var(--display);
+    font-size: 14px;
+    font-style: italic;
+    color: var(--work-accent);
+    opacity: 0.85;
+  }
+
+  .prose :global(h3) {
+    margin-top: 2.4em;
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--ink);
+  }
+
+  .prose :global(blockquote) {
+    margin: 2.4em 0;
+    padding: 6px 0 6px 28px;
+    border-left: 1px solid var(--work-accent);
+    font-family: var(--serif);
+    font-size: 1.2em;
+    font-style: normal;
+    line-height: 1.9;
+    color: var(--ink);
+  }
+
+  .prose :global(ul),
+  .prose :global(ol) {
+    margin: 1.6em 0;
+    padding-left: 1.2em;
+    list-style: none;
+  }
+
+  .prose :global(li) {
+    position: relative;
+    padding-left: 1em;
+    margin-block: 0.55em;
+  }
+
+  .prose :global(li)::before {
+    content: "✦";
+    position: absolute;
+    left: 0;
+    top: 0.05em;
+    font-size: 8px;
+    color: var(--work-accent);
+  }
+
+  .prose :global(strong) {
+    font-weight: 500;
+    color: var(--ink);
+  }
+
+  .prose :global(a) {
+    color: var(--work-accent);
+    border-bottom: 1px solid currentColor;
+  }
+
+  .prose :global(hr) {
+    margin: 3em 0;
+    border: 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .prose--novel {
+    counter-reset: chapter;
+    max-width: 720px;
+    margin-inline: auto;
+    font-family: var(--serif);
+    font-size: clamp(16px, 1.16vw, 18px);
+    line-height: 2.15;
+    letter-spacing: 0.015em;
+    color: rgba(23, 22, 16, 0.82);
+  }
+
+  .prose--novel :global(p) {
+    margin-block: 1.5em;
+    text-align: justify;
+  }
+
+  .prose--novel :global(> p:first-of-type)::first-letter {
+    float: left;
+    margin: 0.08em 0.14em 0 0;
+    font-family: var(--serif);
+    font-size: 3.5em;
+    line-height: 0.9;
+    color: #a84155;
+  }
+
+  .prose--novel :global(h2) {
+    margin-top: 3.8em;
+    padding-top: 1.5em;
+    border-top: 1px solid rgba(23, 22, 16, 0.16);
+    color: var(--paper-ink);
+    font-size: clamp(25px, 2.6vw, 36px);
+    letter-spacing: 0.02em;
+    text-align: center;
+  }
+
+  .prose--novel :global(h2)::before {
+    position: static;
+    display: block;
+    margin-bottom: 10px;
+    color: #a84155;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+  }
+
+  .prose--novel :global(blockquote) {
+    border-left-color: #a84155;
+    color: var(--paper-ink);
+    text-align: center;
+  }
+
+  .prose--novel :global(strong) {
+    color: var(--paper-ink);
+  }
+
+  .prose--novel :global(li)::before {
+    color: #a84155;
+  }
+
+  .prose--novel :global(hr) {
+    border-top-color: rgba(23, 22, 16, 0.16);
+  }
+
+  /* ---------------- Gallery ---------------- */
+  .work-gallery {
+    margin-top: clamp(64px, 9vw, 120px);
+  }
+
+  .work-gallery__head {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 24px;
+    padding-bottom: 22px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .work-content--paper .work-gallery__head {
+    border-color: rgba(23, 22, 16, 0.18);
+  }
+
+  .work-gallery__title {
+    margin-top: 14px;
+    font-family: var(--serif);
+    font-size: clamp(28px, 3.4vw, 48px);
+    font-weight: 400;
+    letter-spacing: -0.03em;
+  }
+
+  .work-content--paper .work-gallery__title {
+    color: var(--paper-ink);
+  }
+
+  .work-gallery__hint {
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: 0.14em;
+    color: var(--ink-faint);
+  }
+
+  .work-content--paper .work-gallery__hint {
+    color: var(--paper-dim);
+  }
+
+  .work-gallery__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(18px, 2.4vw, 34px);
+    margin-top: 32px;
+  }
+
+  .work-gallery__item {
+    display: block;
+    text-align: left;
+    min-width: 0;
+  }
+
+  .work-gallery__item:first-child {
+    grid-column: 1 / -1;
+  }
+
+  .work-gallery__media {
+    position: relative;
+    display: block;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: var(--surface);
+    border: 1px solid var(--line);
+  }
+
+  .work-gallery__item:first-child .work-gallery__media {
+    aspect-ratio: 16 / 8.6;
+  }
+
+  .work-content--paper .work-gallery__media {
+    border-color: rgba(23, 22, 16, 0.18);
+  }
+
+  .work-gallery__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1.2s var(--ease), filter 0.8s ease;
+  }
+
+  .work-gallery__item:hover .work-gallery__media img {
+    transform: scale(1.045);
+    filter: brightness(1.05);
+  }
+
+  .work-gallery__overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 16px;
+    opacity: 0;
+    background: linear-gradient(180deg, transparent 55%, rgba(4, 5, 9, 0.6));
+    transition: opacity 0.4s ease;
+  }
+
+  .work-gallery__item:hover .work-gallery__overlay {
+    opacity: 1;
+  }
+
+  .work-gallery__count {
+    font-family: var(--display);
+    font-size: 14px;
+    font-style: italic;
+    color: rgba(255, 253, 248, 0.82);
+  }
+
+  .work-gallery__zoom {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border: 1px solid rgba(255, 253, 248, 0.3);
+    border-radius: 50%;
+    color: var(--white);
+  }
+
+  .work-gallery__caption {
+    display: block;
+    padding-top: 10px;
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: 0.1em;
+    color: var(--ink-faint);
+  }
+
+  .work-content--paper .work-gallery__caption {
+    color: var(--paper-dim);
+  }
+
+  .work-end {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-top: clamp(60px, 8vw, 100px);
+    font-family: var(--mono);
+    font-size: 7px;
+    letter-spacing: 0.2em;
+    color: var(--ink-faint);
+  }
+
+  .work-content--paper .work-end {
+    color: var(--paper-dim);
+  }
+
+  .work-end__line {
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+
+  .work-content--paper .work-end__line {
+    background: rgba(23, 22, 16, 0.16);
+  }
+
+  /* ---------------- Next work ---------------- */
+  .next-work {
+    position: relative;
+    border-top: 1px solid var(--line);
+    overflow: hidden;
+    background: var(--bg-deep);
+  }
+
+  .next-work__link {
+    position: relative;
+    display: block;
+    padding-block: clamp(70px, 10vw, 140px);
+    isolation: isolate;
+  }
+
+  .next-work__bg {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    opacity: 0.24;
+    overflow: hidden;
+  }
+
+  .next-work__bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: saturate(1.05);
+    transform: scale(1.1);
+    transition: transform 2s var(--ease);
+  }
+
+  .next-work__bg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(5, 6, 10, 0.92), rgba(5, 6, 10, 0.55), rgba(5, 6, 10, 0.9));
+  }
+
+  .next-work__link:hover .next-work__bg img {
+    transform: scale(1.32);
+  }
+
+  .next-work__inner {
+    display: grid;
+    gap: clamp(28px, 4vw, 50px);
+  }
+
+  .next-work__kicker {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: 0.14em;
+    color: var(--ink-faint);
+  }
+
+  .next-work__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+  }
+
+  .next-work__copy {
+    display: grid;
+    gap: 12px;
+  }
+
+  .next-work__category {
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: 0.16em;
+    color: var(--accent);
+  }
+
+  .next-work__title {
+    font-family: var(--serif);
+    font-size: clamp(46px, 7vw, 120px);
+    font-weight: 400;
+    line-height: 1.12;
+    letter-spacing: -0.05em;
+    transition: color 0.4s ease;
+  }
+
+  .next-work__link:hover .next-work__title {
+    color: var(--accent);
+  }
+
+  .next-work__en {
+    font-family: var(--display);
+    font-size: clamp(18px, 1.8vw, 28px);
+    font-style: italic;
+    color: var(--ink-dim);
+  }
+
+  .next-work__arrow {
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+    width: clamp(78px, 8vw, 120px);
+    aspect-ratio: 1;
+    border: 1px solid var(--line-strong);
+    border-radius: 50%;
+    transition: background 0.45s var(--ease), color 0.45s var(--ease), transform 0.55s var(--ease);
+  }
+
+  .next-work__link:hover .next-work__arrow {
+    background: var(--ink);
+    color: var(--bg);
+    transform: rotate(-35deg);
+  }
+
+  @media (max-width: 1000px) {
+    .work-hero__grid {
+      grid-template-columns: 1fr;
+      gap: 50px;
+    }
+    .work-hero__visual {
+      justify-self: start;
+      width: min(68%, 380px);
+    }
+    .work-content__grid {
+      grid-template-columns: 1fr;
+      gap: 50px;
+    }
+    .work-aside__sticky {
+      position: static;
+    }
+    .work-aside {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 24px 40px;
+    }
+    .work-aside .eyebrow {
+      grid-column: 1 / -1;
+    }
+    .work-info {
+      margin-top: 0;
+    }
+    .work-credits,
+    .work-progress,
+    .work-toc {
+      margin-top: 0;
+      padding-top: 0;
+      border-top: 0;
+    }
+    .work-back-link {
+      grid-column: 1 / -1;
+      margin-top: 0;
+    }
+    .prose :global(h2)::before {
+      position: static;
+      display: block;
+      margin-bottom: 8px;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .work-crumb {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .work-hero__facts {
+      grid-template-columns: 1fr 1fr;
+    }
+    .work-hero__visual {
+      width: 78%;
+    }
+    .work-aside {
+      grid-template-columns: 1fr;
+    }
+    .work-gallery__grid {
+      grid-template-columns: 1fr;
+    }
+    .work-gallery__item:first-child {
+      grid-column: auto;
+    }
+    .work-gallery__item:first-child .work-gallery__media {
+      aspect-ratio: 4 / 3;
+    }
+    .work-gallery__head {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .work-player__meta {
+      flex-direction: column;
+      gap: 4px;
+    }
+    .next-work__row {
+      align-items: flex-end;
+    }
+    .next-work__arrow {
+      width: 62px;
+    }
+    .next-work__kicker > span:last-child {
+      display: none;
+    }
+    .prose--novel {
+      font-size: 16px;
+    }
+    .work-hero__vertical {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .work-player__label i,
+    .work-cover__play-ring svg {
+      animation: none;
+    }
+  }
+</style>

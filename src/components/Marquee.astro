@@ -1,0 +1,86 @@
+---
+const items = [
+  { cn: '插画', en: 'ILLUSTRATION' },
+  { cn: '小说', en: 'NOVEL' },
+  { cn: '影像', en: 'MOTION' },
+  { cn: '动画赏析', en: 'ANIMATION STUDY' },
+  { cn: '跨次元', en: 'CROSS-DIMENSION' },
+];
+---
+
+<div class="marquee" aria-hidden="true">
+  <div class="marquee__track">
+    {[0, 1].map((copy) => (
+      <div class="marquee__group">
+        {items.map((item) => (
+          <>
+            <span class="marquee__cn">{item.cn}</span>
+            <span class="marquee__en">{item.en}</span>
+            <span class="marquee__star">✦</span>
+          </>
+        ))}
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+  .marquee {
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    border-block: 1px solid var(--line);
+    background: rgba(7, 8, 13, 0.55);
+  }
+
+  .marquee__track {
+    display: flex;
+    width: max-content;
+    animation: marquee-scroll 38s linear infinite;
+    will-change: transform;
+  }
+
+  .marquee:hover .marquee__track {
+    animation-play-state: paused;
+  }
+
+  .marquee__group {
+    display: flex;
+    align-items: center;
+    gap: clamp(18px, 2.4vw, 38px);
+    padding: 22px clamp(18px, 2.4vw, 38px) 22px 0;
+    flex: 0 0 auto;
+  }
+
+  .marquee__cn {
+    font-family: var(--serif);
+    font-size: clamp(15px, 1.4vw, 20px);
+    letter-spacing: 0.08em;
+    color: var(--ink-soft);
+    white-space: nowrap;
+  }
+
+  .marquee__en {
+    font-family: var(--mono);
+    font-size: clamp(8px, 0.7vw, 10px);
+    letter-spacing: 0.22em;
+    color: var(--ink-faint);
+    white-space: nowrap;
+  }
+
+  .marquee__star {
+    font-size: 11px;
+    color: var(--accent);
+    opacity: 0.8;
+  }
+
+  @keyframes marquee-scroll {
+    to { transform: translateX(-50%); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .marquee__track {
+      animation: none;
+    }
+  }
+</style>

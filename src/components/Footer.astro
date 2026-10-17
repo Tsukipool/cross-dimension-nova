@@ -1,0 +1,241 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="container--wide">
+    <div class="footer__top">
+      <div class="footer__brand">
+        <Logo />
+        <p class="footer__tagline">
+          在画格之间，<br />我们相遇。
+        </p>
+      </div>
+
+      <div class="footer__nav">
+        <p class="footer__label">CONTENTS</p>
+        <a href="/works/" data-nav-link><span>作品档案</span><span class="footer__num">01</span></a>
+        <a href="/about/" data-nav-link><span>关于社团</span><span class="footer__num">02</span></a>
+        <a href="/#cinema" data-nav-link><span>放映室</span><span class="footer__num">03</span></a>
+        <a href="/#join" data-nav-link><span>加入我们</span><span class="footer__num">04</span></a>
+      </div>
+
+      <div class="footer__info">
+        <p class="footer__label">CLUB</p>
+        <address>
+          山东省济钢高级中学<br />
+          （全福校区）<br />
+          跨次元新星动漫社<br />
+          艺术类 · EST. 2026
+        </address>
+        <p class="footer__note">社团活动与招新信息<br />以校内公告为准</p>
+      </div>
+
+      <button class="footer__top-btn" type="button" data-back-to-top aria-label="回到顶部">
+        <Icon name="arrowDown" size={18} class="footer__top-icon" />
+        <span>BACK TO TOP</span>
+      </button>
+    </div>
+
+    <div class="footer__wordmark" aria-hidden="true">
+      <span class="footer__wordmark-cn">跨次元新星</span>
+      <span class="footer__wordmark-en">NOVA</span>
+    </div>
+
+    <div class="footer__bottom">
+      <p>© {year} CROSS-DIMENSION NOVA · ALL DREAMS RESERVED</p>
+      <p>MADE ACROSS DIMENSIONS <span class="footer__star">✦</span> 山东省济钢高级中学（全福校区）</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    position: relative;
+    z-index: 1;
+    padding-top: clamp(60px, 8vw, 110px);
+    border-top: 1px solid var(--line);
+    background:
+      radial-gradient(ellipse 60% 80% at 50% 120%, rgba(111, 62, 85, 0.14), transparent 70%),
+      var(--bg-deep);
+    overflow: hidden;
+  }
+
+  .footer__top {
+    display: grid;
+    grid-template-columns: 1.4fr 0.7fr 0.9fr auto;
+    gap: clamp(30px, 5vw, 90px);
+    align-items: start;
+    padding-bottom: clamp(50px, 7vw, 100px);
+  }
+
+  .footer__tagline {
+    margin-top: 30px;
+    font-family: var(--serif);
+    font-size: clamp(20px, 2.1vw, 30px);
+    line-height: 1.7;
+    color: var(--ink-soft);
+    letter-spacing: 0.03em;
+  }
+
+  .footer__label {
+    margin-bottom: 22px;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.24em;
+    color: var(--ink-faint);
+  }
+
+  .footer__nav {
+    display: grid;
+    align-content: start;
+  }
+  .footer__nav a {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 13px;
+    color: var(--ink-dim);
+    transition: color 0.35s ease, padding-left 0.4s var(--ease);
+  }
+  .footer__nav a:hover {
+    color: var(--ink);
+    padding-left: 6px;
+  }
+  .footer__num {
+    font-family: var(--display);
+    font-size: 11px;
+    color: var(--ink-faint);
+  }
+
+  .footer__info address {
+    color: var(--ink-soft);
+    font-size: 13px;
+    line-height: 2;
+  }
+  .footer__note {
+    margin-top: 24px;
+    font-size: 11px;
+    line-height: 1.9;
+    color: var(--ink-faint);
+  }
+
+  .footer__top-btn {
+    display: grid;
+    justify-items: center;
+    gap: 10px;
+    padding-top: 4px;
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: 0.18em;
+    color: var(--ink-dim);
+  }
+
+  .footer__top-icon {
+    box-sizing: content-box;
+    width: 20px;
+    height: 20px;
+    padding: 16px;
+    border: 1px solid var(--line-strong);
+    border-radius: 50%;
+    transform: rotate(180deg);
+    transition: background 0.4s ease, color 0.4s ease, transform 0.5s var(--ease);
+  }
+  .footer__top-btn:hover .footer__top-icon {
+    background: var(--ink);
+    color: var(--bg);
+    transform: rotate(180deg) translateY(4px);
+  }
+
+  .footer__wordmark {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 30px;
+    padding-bottom: clamp(28px, 4vw, 50px);
+    overflow: hidden;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .footer__wordmark-cn {
+    font-family: var(--serif);
+    font-size: clamp(52px, 12.5vw, 210px);
+    font-weight: 400;
+    line-height: 0.9;
+    letter-spacing: -0.05em;
+    white-space: nowrap;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(243, 238, 227, 0.24);
+  }
+
+  .footer__wordmark-en {
+    font-family: var(--display);
+    font-size: clamp(64px, 14vw, 240px);
+    font-style: italic;
+    line-height: 0.8;
+    color: var(--accent);
+    opacity: 0.86;
+    white-space: nowrap;
+  }
+
+  .footer__bottom {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding-block: 26px 32px;
+    font-family: var(--mono);
+    font-size: 8.5px;
+    letter-spacing: 0.14em;
+    color: var(--ink-faint);
+  }
+
+  .footer__star {
+    color: var(--accent);
+    margin-inline: 6px;
+  }
+
+  @media (max-width: 1000px) {
+    .footer__top {
+      grid-template-columns: 1.3fr 1fr;
+      row-gap: 50px;
+    }
+    .footer__top-btn {
+      justify-self: start;
+      grid-auto-flow: column;
+      align-items: center;
+      gap: 14px;
+    }
+    .footer__top-icon {
+      width: 16px;
+      height: 16px;
+      padding: 11px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .footer__top {
+      grid-template-columns: 1fr;
+    }
+    .footer__wordmark {
+      flex-direction: column;
+      gap: 6px;
+    }
+    .footer__wordmark-cn {
+      font-size: clamp(38px, 13vw, 64px);
+    }
+    .footer__wordmark-en {
+      font-size: clamp(72px, 24vw, 120px);
+      align-self: flex-end;
+    }
+    .footer__bottom {
+      flex-direction: column;
+      gap: 8px;
+      font-size: 7.5px;
+    }
+  }
+</style>

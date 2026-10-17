@@ -1,0 +1,191 @@
+---
+import type { Work } from '../lib/works';
+import WorkCard from './WorkCard.astro';
+import Icon from './Icon.astro';
+
+interface Props {
+  works: Work[];
+  total: number;
+}
+
+const { works, total } = Astro.props;
+const [first, second, third, fourth] = works;
+---
+
+<section class="selected section" id="selected" aria-labelledby="selected-title">
+  <div class="container">
+    <header class="section-head selected__head">
+      <div>
+        <p class="eyebrow" data-reveal>SELECTED WORKS / 01</p>
+        <h2 class="section-head__title" id="selected-title" data-reveal style="--reveal-delay: .08s">
+          被看见的<em>次元</em>
+        </h2>
+      </div>
+      <div class="section-head__aside" data-reveal style="--reveal-delay: .16s">
+        <p>从夜色里的电车，到世界尽头的心跳。这里收藏着社团成员关于画面、故事与声音的第一次尝试。</p>
+      </div>
+    </header>
+
+    <div class="selected__gallery">
+      <div class="selected__column">
+        {first && (
+          <div class="selected__work" data-reveal="scale">
+            <WorkCard work={first} ratio="16 / 10" eager />
+          </div>
+        )}
+        {third && (
+          <div class="selected__work selected__work--inset" data-reveal="scale" style="--reveal-delay: .08s">
+            <WorkCard work={third} ratio="4 / 5" />
+          </div>
+        )}
+      </div>
+
+      <div class="selected__column selected__column--offset">
+        {second && (
+          <div class="selected__work selected__work--narrow" data-reveal="scale">
+            <WorkCard work={second} ratio="3 / 4" />
+          </div>
+        )}
+        {fourth && (
+          <div class="selected__work" data-reveal="scale" style="--reveal-delay: .1s">
+            <WorkCard work={fourth} ratio="16 / 10" />
+          </div>
+        )}
+      </div>
+    </div>
+
+    <div class="selected__footer" data-reveal>
+      <span class="selected__note">精选 {String(works.length).padStart(2, '0')} / 共 {String(total).padStart(2, '0')} 件作品</span>
+      <a class="selected__all" href="/works/" data-nav-link data-cursor-label="Archive">
+        <span>浏览全部作品</span>
+        <span class="selected__all-arrow"><Icon name="arrowRight" size={18} /></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .selected {
+    position: relative;
+    background:
+      radial-gradient(ellipse 55% 44% at 84% 10%, rgba(116, 69, 90, 0.12), transparent 70%),
+      transparent;
+  }
+
+  .selected__head {
+    margin-bottom: clamp(60px, 8vw, 120px);
+  }
+
+  .selected__gallery {
+    display: grid;
+    grid-template-columns: minmax(0, 1.16fr) minmax(0, 0.84fr);
+    gap: clamp(38px, 6vw, 104px);
+    align-items: start;
+  }
+
+  .selected__column {
+    display: grid;
+    gap: clamp(54px, 7vw, 112px);
+  }
+
+  .selected__column--offset {
+    padding-top: clamp(60px, 11vw, 180px);
+  }
+
+  .selected__work {
+    position: relative;
+  }
+
+  .selected__work--inset {
+    width: 82%;
+    margin-left: auto;
+  }
+
+  .selected__work--narrow {
+    width: 88%;
+  }
+
+  .selected__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    margin-top: clamp(70px, 10vw, 150px);
+    padding-top: 28px;
+    border-top: 1px solid var(--line);
+  }
+
+  .selected__note {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    color: var(--ink-faint);
+  }
+
+  .selected__all {
+    display: inline-flex;
+    align-items: center;
+    gap: clamp(18px, 3vw, 40px);
+    font-family: var(--serif);
+    font-size: clamp(17px, 1.6vw, 23px);
+    letter-spacing: 0.06em;
+    color: var(--ink-soft);
+    transition: color 0.35s ease;
+  }
+
+  .selected__all-arrow {
+    display: grid;
+    place-items: center;
+    width: 56px;
+    height: 56px;
+    border: 1px solid var(--line-strong);
+    border-radius: 50%;
+    transition: background 0.4s ease, color 0.4s ease, transform 0.5s var(--ease);
+  }
+
+  .selected__all:hover {
+    color: var(--ink);
+  }
+  .selected__all:hover .selected__all-arrow {
+    background: var(--ink);
+    color: var(--bg);
+    transform: translateX(5px);
+  }
+
+  @media (max-width: 900px) {
+    .selected__gallery {
+      grid-template-columns: 1fr;
+      gap: clamp(50px, 9vw, 80px);
+    }
+    .selected__column {
+      gap: clamp(44px, 8vw, 70px);
+    }
+    .selected__column--offset {
+      padding-top: 0;
+    }
+    .selected__work--inset,
+    .selected__work--narrow {
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .selected__head {
+      margin-bottom: 52px;
+    }
+    .selected__footer {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 20px;
+      margin-top: 66px;
+    }
+    .selected__all {
+      width: 100%;
+      justify-content: space-between;
+    }
+    .selected__all-arrow {
+      width: 48px;
+      height: 48px;
+    }
+  }
+</style>

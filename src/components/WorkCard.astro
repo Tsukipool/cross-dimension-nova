@@ -1,0 +1,346 @@
+---
+import type { Work } from '../lib/works';
+import { typeMeta, workHref } from '../lib/works';
+import Icon from './Icon.astro';
+
+interface Props {
+  work: Work;
+  ratio?: string;
+  eager?: boolean;
+  class?: string;
+  showIndex?: boolean;
+}
+
+const {
+  work,
+  ratio = '4 / 5',
+  eager = false,
+  class: className = '',
+  showIndex = true,
+} = Astro.props;
+
+const meta = typeMeta[work.data.type];
+const isVideo = work.data.type === 'video';
+---
+
+<a
+  class:list={['work-card', className]}
+  href={workHref(work)}
+  style={`--ratio: ${ratio}; --accent: ${work.data.accent}`}
+  data-work-card
+  data-work-type={work.data.type}
+  data-tilt
+  data-cursor-label={isVideo ? 'Play' : 'View'}
+  aria-label={`${work.data.title} · ${meta.label}`}
+>
+  <div class="work-card__tilt" data-tilt-inner>
+    <div class="work-card__frame">
+      <img
+        class="work-card__img"
+        src={work.data.cover}
+        alt={work.data.title}
+        width="1200"
+        height="1500"
+        loading={eager ? 'eager' : 'lazy'}
+        decoding="async"
+      />
+      <span class="work-card__wash"></span>
+      <span class="work-card__glare"></span>
+
+      <div class="work-card__top">
+        {showIndex && <span class="work-card__serial">N° {work.data.serial}</span>}
+        <span class="work-card__type">{meta.motif} {meta.en}</span>
+      </div>
+
+      <div class="work-card__bottom">
+        <div class="work-card__bottom-copy">
+          <span class="work-card__category">{work.data.category}</span>
+          <span class="work-card__en">{work.data.english}</span>
+        </div>
+        <span class="work-card__arrow">
+          <Icon name="arrowUpRight" size={18} />
+        </span>
+      </div>
+
+      {isVideo && (
+        <span class="work-card__play" aria-hidden="true">
+          <Icon name="play" size={22} />
+        </span>
+      )}
+    </div>
+  </div>
+
+  <div class="work-card__meta">
+    <h3 class="work-card__title">{work.data.title}</h3>
+    <div class="work-card__aside">
+      <span>{meta.label}</span>
+      <span class="work-card__dot"></span>
+      <span>{work.data.year}</span>
+    </div>
+  </div>
+</a>
+
+<style>
+  .work-card {
+    display: block;
+    position: relative;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .work-card__tilt {
+    transform: perspective(1100px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateZ(0);
+    transform-style: preserve-3d;
+    transition: transform 0.5s var(--ease);
+    will-change: transform;
+  }
+
+  .work-card.is-tilting .work-card__tilt {
+    transition-duration: 0.14s;
+  }
+
+  .work-card__frame {
+    position: relative;
+    aspect-ratio: var(--ratio);
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.24);
+    transition: border-color 0.6s var(--ease), box-shadow 0.6s var(--ease);
+    isolation: isolate;
+  }
+
+  .work-card:hover .work-card__frame {
+    border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+    box-shadow: 0 46px 100px rgba(0, 0, 0, 0.42);
+  }
+
+  .work-card__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.015);
+    transition: transform 1.3s var(--ease), filter 1s var(--ease);
+    will-change: transform;
+  }
+
+  .work-card:hover .work-card__img {
+    transform: scale(1.065);
+    filter: saturate(1.08) brightness(1.03);
+  }
+
+  .work-card__wash {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background:
+      linear-gradient(180deg, rgba(4, 5, 9, 0.44) 0%, transparent 28%, transparent 55%, rgba(4, 5, 9, 0.84) 100%),
+      linear-gradient(135deg, color-mix(in srgb, var(--accent) 8%, transparent), transparent 45%);
+    opacity: 0.9;
+    transition: opacity 0.6s var(--ease);
+  }
+
+  .work-card__glare {
+    position: absolute;
+    inset: -1px;
+    z-index: 2;
+    pointer-events: none;
+    opacity: 0;
+    background: radial-gradient(
+      420px circle at var(--gx, 50%) var(--gy, 50%),
+      rgba(255, 255, 255, 0.17),
+      transparent 62%
+    );
+    transition: opacity 0.5s ease;
+    mix-blend-mode: soft-light;
+  }
+
+  .work-card:hover .work-card__glare {
+    opacity: 1;
+  }
+
+  .work-card__top,
+  .work-card__bottom {
+    position: absolute;
+    z-index: 3;
+    left: clamp(16px, 2vw, 28px);
+    right: clamp(16px, 2vw, 28px);
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .work-card__top {
+    top: clamp(16px, 2vw, 28px);
+    align-items: center;
+  }
+
+  .work-card__serial {
+    padding: 6px 10px;
+    border: 1px solid rgba(243, 238, 227, 0.24);
+    border-radius: 999px;
+    background: rgba(5, 6, 11, 0.42);
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: 0.14em;
+    color: rgba(255, 253, 248, 0.8);
+  }
+
+  .work-card__type {
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: 0.16em;
+    color: rgba(255, 253, 248, 0.7);
+    text-shadow: 0 1px 14px rgba(0, 0, 0, 0.5);
+  }
+
+  .work-card__bottom {
+    bottom: clamp(16px, 2vw, 28px);
+    align-items: end;
+    transform: translateY(0);
+    transition: transform 0.6s var(--ease);
+  }
+
+  .work-card:hover .work-card__bottom {
+    transform: translateY(-5px);
+  }
+
+  .work-card__bottom-copy {
+    display: grid;
+    gap: 7px;
+  }
+
+  .work-card__category {
+    font-family: var(--serif);
+    font-size: clamp(17px, 1.5vw, 22px);
+    letter-spacing: 0.08em;
+    color: var(--white);
+  }
+
+  .work-card__en {
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: 0.16em;
+    color: rgba(255, 253, 248, 0.54);
+  }
+
+  .work-card__arrow {
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+    width: 42px;
+    height: 42px;
+    border: 1px solid rgba(255, 253, 248, 0.36);
+    border-radius: 50%;
+    color: var(--white);
+    background: rgba(7, 8, 13, 0.36);
+    transition:
+      transform 0.55s var(--ease),
+      background 0.45s ease,
+      color 0.45s ease,
+      border-color 0.45s ease;
+  }
+
+  .work-card:hover .work-card__arrow {
+    transform: rotate(45deg);
+    background: var(--white);
+    border-color: var(--white);
+    color: #111016;
+  }
+
+  .work-card__play {
+    position: absolute;
+    z-index: 4;
+    top: 50%;
+    left: 50%;
+    display: grid;
+    place-items: center;
+    width: 74px;
+    height: 74px;
+    margin: -37px 0 0 -37px;
+    border: 1px solid rgba(255, 253, 248, 0.4);
+    border-radius: 50%;
+    background: rgba(7, 8, 13, 0.48);
+    color: var(--white);
+    opacity: 0;
+    transform: scale(0.85);
+    transition: opacity 0.5s ease, transform 0.6s var(--ease), background 0.4s ease;
+  }
+
+  .work-card__play svg {
+    margin-left: 3px;
+  }
+
+  .work-card:hover .work-card__play {
+    opacity: 1;
+    transform: scale(1);
+    background: rgba(255, 147, 166, 0.9);
+    border-color: transparent;
+    color: #181017;
+  }
+
+  .work-card__meta {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 20px;
+    padding-top: 20px;
+  }
+
+  .work-card__title {
+    font-family: var(--serif);
+    font-size: clamp(24px, 2.5vw, 40px);
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    transition: color 0.35s ease;
+  }
+
+  .work-card:hover .work-card__title {
+    color: var(--accent);
+  }
+
+  .work-card__aside {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    flex: 0 0 auto;
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    color: var(--ink-faint);
+  }
+
+  .work-card__dot {
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  @media (max-width: 700px) {
+    .work-card__meta {
+      padding-top: 14px;
+    }
+    .work-card__arrow {
+      width: 36px;
+      height: 36px;
+    }
+    .work-card__aside {
+      font-size: 8px;
+    }
+    .work-card__play {
+      width: 58px;
+      height: 58px;
+      margin: -29px 0 0 -29px;
+    }
+  }
+
+  @media (hover: none) {
+    .work-card__play {
+      opacity: 1;
+      transform: scale(0.9);
+    }
+  }
+</style>

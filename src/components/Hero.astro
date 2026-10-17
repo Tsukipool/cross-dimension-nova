@@ -1,0 +1,742 @@
+---
+import Icon from './Icon.astro';
+import ParticleField from './ParticleField.astro';
+---
+
+<section class="hero" data-hero aria-labelledby="hero-title">
+  <div class="hero__stage" aria-hidden="true">
+    <ParticleField variant="starfield" density={1} accent="#ff93a6" opacity={0.92} class="hero__particles" />
+    <div class="hero__aurora hero__aurora--one"></div>
+    <div class="hero__aurora hero__aurora--two"></div>
+    <div class="hero__halo"></div>
+    <div class="hero__orbit">
+      <span class="hero__orbit-ring hero__orbit-ring--one"></span>
+      <span class="hero__orbit-ring hero__orbit-ring--two"></span>
+      <span class="hero__orbit-ring hero__orbit-ring--three"></span>
+      <span class="hero__orbit-ring hero__orbit-ring--four"></span>
+      <span class="hero__orbit-node hero__orbit-node--one"></span>
+      <span class="hero__orbit-node hero__orbit-node--two"></span>
+      <span class="hero__orbit-dot"></span>
+    </div>
+    <div class="hero__grid"></div>
+    <div class="hero__glow-floor"></div>
+
+    <div class="hero__float hero__float--a" data-depth="1.5">
+      <div class="hero__scroll" data-hero-scroll="1">
+        <div class="hero__card-wrap" style="--rot: -7deg; --bob-delay: -2.8s">
+          <article class="hero__card" data-hero-card>
+            <div class="hero__card-media">
+              <img src="/art/moonlit-tea-party.svg" alt="" width="1200" height="1500" loading="eager" />
+            </div>
+            <div class="hero__card-meta">
+              <span>003 / 月面茶会</span>
+              <span>✦</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero__float hero__float--b" data-depth="0.8">
+      <div class="hero__scroll" data-hero-scroll="1.4">
+        <div class="hero__card-wrap" style="--rot: 6deg; --bob-delay: -5.4s">
+          <article class="hero__card" data-hero-card>
+            <div class="hero__card-media">
+              <img src="/art/stardust-tram.svg" alt="" width="1200" height="1500" loading="eager" />
+            </div>
+            <div class="hero__card-meta">
+              <span>001 / 星屑电车</span>
+              <span>✦</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero__float hero__float--c" data-depth="2.1">
+      <div class="hero__scroll" data-hero-scroll="0.7">
+        <div class="hero__card-wrap" style="--rot: -3deg; --bob-delay: -1.2s">
+          <article class="hero__card hero__card--wide" data-hero-card>
+            <div class="hero__card-media">
+              <img src="/art/first-night-screening.svg" alt="" width="1920" height="1080" loading="lazy" />
+            </div>
+            <div class="hero__card-meta">
+              <span>008 / 放映室</span>
+              <span>◉</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <p class="hero__vertical">まだ見ぬ次元の向こうへ</p>
+  </div>
+
+  <div class="hero__content container--wide" data-hero-content>
+    <div class="hero__top" data-hero-fade>
+      <p class="eyebrow">山东省济钢高级中学（全福校区） · 跨次元新星动漫社</p>
+      <p class="hero__top-right">
+        <span>ART</span><i>×</i><span>STORY</span><i>×</i><span>MOTION</span>
+      </p>
+    </div>
+
+    <div class="hero__main">
+      <h1 class="hero__title" id="hero-title">
+        <span class="line-mask" style="--line-delay: 0.05s"><span>跨次元新星</span></span>
+      </h1>
+
+      <div class="hero__subline line-mask" style="--line-delay: 0.18s">
+        <span>
+          <em class="font-display">Cross-Dimension</em>
+          <strong>NOVA</strong>
+          <sup>✦</sup>
+        </span>
+      </div>
+
+      <p class="hero__jp" data-hero-fade>CROSS-DIMENSION NOVA / AN ANIME ARTS COLLECTIVE</p>
+    </div>
+
+    <div class="hero__bottom">
+      <p class="hero__lead" data-hero-fade>
+        以动画影像艺术为载体，<br />
+        在画格、文字与光影之间，<br />
+        收集属于我们的次元。
+      </p>
+
+      <div class="hero__actions" data-hero-fade>
+        <a class="btn" href="/works/" data-nav-link data-magnetic>
+          <span>进入作品档案</span>
+          <span class="btn__dot"><Icon name="arrowUpRight" size={14} /></span>
+        </a>
+        <a class="text-link hero__about-link" href="/about/" data-nav-link>
+          <span class="text-link__line">了解社团</span>
+          <Icon name="arrowRight" size={13} />
+        </a>
+      </div>
+
+      <div class="hero__stamp-wrap" data-hero-fade>
+        <a class="hero__stamp" href="#selected" aria-label="向下浏览精选作品">
+          <svg viewBox="0 0 120 120" aria-hidden="true">
+            <defs>
+              <path id="hero-stamp-path" d="M60,60 m-44,0 a44,44 0 1,1 88,0 a44,44 0 1,1 -88,0" />
+            </defs>
+            <text class="hero__stamp-text">
+              <textPath href="#hero-stamp-path">CROSS-DIMENSION NOVA · SINCE 2026 · JINAN ·</textPath>
+            </text>
+          </svg>
+          <span class="hero__stamp-center"><Icon name="arrowDown" size={17} /></span>
+        </a>
+        <span class="hero__scroll-label">SCROLL<br />TO EXPLORE</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    overflow: hidden;
+    isolation: isolate;
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 35%, rgba(82, 48, 80, 0.24), transparent 70%),
+      linear-gradient(180deg, #07080d 0%, #090a12 58%, #06070c 100%);
+  }
+
+  .hero__stage {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    perspective: 1400px;
+  }
+
+  .hero__stage::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: url("/art/starfield.svg") center / cover no-repeat;
+    opacity: 0.62;
+  }
+
+  .hero__aurora {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.62;
+  }
+
+  .hero__aurora--one {
+    top: 8%;
+    left: 12%;
+    width: 44vw;
+    height: 32vw;
+    background: radial-gradient(circle, rgba(134, 79, 115, 0.34), transparent 65%);
+    animation: aurora-drift 18s ease-in-out infinite alternate;
+  }
+
+  .hero__aurora--two {
+    right: 4%;
+    bottom: 18%;
+    width: 38vw;
+    height: 34vw;
+    background: radial-gradient(circle, rgba(42, 102, 112, 0.24), transparent 65%);
+    animation: aurora-drift 22s ease-in-out infinite alternate-reverse;
+  }
+
+  @keyframes aurora-drift {
+    from { transform: translate3d(-3%, 2%, 0) scale(1); }
+    to { transform: translate3d(5%, -4%, 0) scale(1.12); }
+  }
+
+  .hero__halo {
+    position: absolute;
+    top: 38%;
+    left: 50%;
+    width: min(64vw, 980px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, rgba(243, 238, 227, 0.05) 0%, transparent 62%);
+    box-shadow: inset 0 0 100px rgba(255, 147, 166, 0.03);
+  }
+
+  .hero__particles {
+    inset: -2%;
+  }
+
+  .hero__orbit {
+    position: absolute;
+    top: 38%;
+    left: 50%;
+    width: min(58vw, 900px);
+    aspect-ratio: 1;
+    transform: translate(-50%, -50%) rotate(-18deg);
+    transform-style: preserve-3d;
+    opacity: 0.58;
+  }
+
+  .hero__orbit-ring {
+    position: absolute;
+    inset: 0;
+    border: 1px solid rgba(243, 238, 227, 0.1);
+    border-radius: 50%;
+  }
+  .hero__orbit-ring--one {
+    transform: scaleY(0.38);
+    border-color: rgba(255, 147, 166, 0.22);
+    animation: ring-one-spin 30s linear infinite;
+  }
+  .hero__orbit-ring--two {
+    transform: scaleX(0.64) rotate(58deg);
+    border-style: dashed;
+    border-color: rgba(143, 222, 217, 0.16);
+    animation: ring-two-spin 44s linear infinite reverse;
+  }
+  .hero__orbit-ring--three {
+    inset: 9%;
+    transform: rotate(72deg) scaleY(0.44);
+    border-color: rgba(243, 199, 156, 0.18);
+    animation: ring-three-spin 54s linear infinite;
+  }
+  .hero__orbit-ring--four {
+    inset: 18%;
+    transform: rotate(-36deg) scaleX(0.7);
+    border-style: dotted;
+    border-color: rgba(243, 238, 227, 0.12);
+    animation: ring-four-spin 38s linear infinite reverse;
+  }
+
+  .hero__orbit-node {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--accent-warm);
+    box-shadow: 0 0 14px rgba(243, 199, 156, 0.9);
+    animation: node-pulse 4.8s ease-in-out infinite;
+  }
+  .hero__orbit-node--one {
+    top: 19%;
+    left: 24%;
+  }
+  .hero__orbit-node--two {
+    right: 17%;
+    bottom: 28%;
+    width: 3px;
+    height: 3px;
+    background: var(--accent-cool);
+    box-shadow: 0 0 12px rgba(143, 222, 217, 0.9);
+    animation-delay: -2.1s;
+  }
+
+  .hero__orbit-dot {
+    position: absolute;
+    top: 50%;
+    left: -3px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 18px var(--accent);
+  }
+
+  @keyframes ring-one-spin {
+    from { transform: scaleY(0.38) rotate(0deg); }
+    to { transform: scaleY(0.38) rotate(360deg); }
+  }
+  @keyframes ring-two-spin {
+    from { transform: scaleX(0.64) rotate(58deg); }
+    to { transform: scaleX(0.64) rotate(418deg); }
+  }
+  @keyframes ring-three-spin {
+    from { transform: scaleY(0.44) rotate(72deg); }
+    to { transform: scaleY(0.44) rotate(432deg); }
+  }
+  @keyframes ring-four-spin {
+    from { transform: scaleX(0.7) rotate(-36deg); }
+    to { transform: scaleX(0.7) rotate(324deg); }
+  }
+
+  @keyframes node-pulse {
+    0%, 100% { opacity: 0.28; transform: scale(0.8); }
+    50% { opacity: 1; transform: scale(1.25); }
+  }
+
+  .hero__grid {
+    position: absolute;
+    left: -20%;
+    right: -20%;
+    bottom: -8%;
+    height: 48vh;
+    background-image:
+      linear-gradient(rgba(243, 238, 227, 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(243, 238, 227, 0.06) 1px, transparent 1px);
+    background-size: 74px 74px;
+    transform: perspective(600px) rotateX(66deg);
+    transform-origin: 50% 100%;
+    mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent 82%);
+    -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent 82%);
+    opacity: 0.5;
+  }
+
+  .hero__glow-floor {
+    position: absolute;
+    left: 50%;
+    bottom: -16%;
+    width: 70vw;
+    height: 42vh;
+    transform: translateX(-50%);
+    background: radial-gradient(ellipse, rgba(155, 89, 119, 0.18), transparent 66%);
+  }
+
+  .hero__vertical {
+    position: absolute;
+    top: 26%;
+    right: 26px;
+    font-family: var(--serif);
+    font-size: 9px;
+    letter-spacing: 0.34em;
+    writing-mode: vertical-rl;
+    color: rgba(243, 238, 227, 0.26);
+  }
+
+  /* ------------------------- Floating cards ------------------------- */
+  .hero__float {
+    position: absolute;
+    z-index: 1;
+    will-change: transform;
+  }
+
+  .hero__float--a {
+    top: 31%;
+    left: clamp(-50px, -1.5vw, 0px);
+    width: clamp(148px, 13.5vw, 236px);
+  }
+
+  .hero__float--b {
+    top: 23%;
+    right: clamp(-44px, -1.2vw, 0px);
+    width: clamp(150px, 13.8vw, 242px);
+  }
+
+  .hero__float--c {
+    top: 66%;
+    right: 10.5%;
+    width: clamp(108px, 9.5vw, 168px);
+    opacity: 0.82;
+  }
+
+  .hero__scroll {
+    will-change: transform;
+  }
+
+  .hero__card-wrap {
+    animation: hero-bob 9s ease-in-out infinite;
+    animation-delay: var(--bob-delay, 0s);
+  }
+
+  @keyframes hero-bob {
+    0%, 100% { transform: rotate(var(--rot, 0deg)) translateY(0); }
+    50% { transform: rotate(calc(var(--rot, 0deg) + 1.2deg)) translateY(-11px); }
+  }
+
+  .hero__card {
+    position: relative;
+    padding: 7px 7px 8px;
+    background: rgba(16, 18, 27, 0.68);
+    border: 1px solid rgba(243, 238, 227, 0.16);
+    border-radius: 2px;
+    box-shadow:
+      0 35px 80px rgba(0, 0, 0, 0.45),
+      inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  }
+
+  .hero__card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent 30%);
+    pointer-events: none;
+  }
+
+  .hero__card-media {
+    overflow: hidden;
+    aspect-ratio: 3 / 4;
+    background: var(--surface);
+  }
+
+  .hero__card--wide .hero__card-media {
+    aspect-ratio: 16 / 10;
+  }
+
+  .hero__card-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.02);
+    transition: transform 1.4s var(--ease);
+  }
+
+  .hero__card-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    padding-top: 7px;
+    font-family: var(--mono);
+    font-size: clamp(5px, 0.48vw, 7px);
+    letter-spacing: 0.11em;
+    color: rgba(243, 238, 227, 0.52);
+    white-space: nowrap;
+  }
+
+  .hero__card-meta span:last-child {
+    color: var(--accent);
+  }
+
+  /* ------------------------- Foreground ------------------------- */
+  .hero__content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    min-height: 100svh;
+    padding-top: calc(var(--nav-h) + clamp(20px, 3vh, 36px));
+    padding-bottom: clamp(24px, 4vh, 48px);
+  }
+
+  .hero__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .hero__top .eyebrow {
+    white-space: normal;
+    line-height: 1.7;
+  }
+
+  .hero__top-right {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: 0.2em;
+    color: var(--ink-faint);
+  }
+
+  .hero__top-right i {
+    font-style: normal;
+    color: var(--accent);
+  }
+
+  .hero__main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-block: auto;
+    text-align: center;
+    padding-block: 4vh;
+  }
+
+  .hero__title {
+    font-family: var(--serif);
+    font-size: clamp(64px, 11.7vw, 184px);
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: 0.015em;
+    text-indent: 0.015em;
+    white-space: nowrap;
+    text-shadow: 0 18px 70px rgba(0, 0, 0, 0.4);
+  }
+
+  .hero__title .line-mask {
+    padding-bottom: 0.16em;
+    margin-bottom: -0.16em;
+  }
+
+  .hero__subline {
+    margin-top: clamp(8px, 1.6vh, 20px);
+    font-size: clamp(10px, 1.15vw, 16px);
+    letter-spacing: 0.12em;
+    color: var(--ink-soft);
+  }
+
+  .hero__subline em {
+    font-size: 1.55em;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+  }
+
+  .hero__subline strong {
+    margin-left: 0.55em;
+    font-family: var(--mono);
+    font-size: 0.82em;
+    font-weight: 500;
+    letter-spacing: 0.34em;
+    color: var(--accent);
+  }
+
+  .hero__subline sup {
+    margin-left: 0.45em;
+    font-size: 0.65em;
+    color: var(--accent-warm);
+  }
+
+  .hero__jp {
+    margin-top: clamp(14px, 2.4vh, 30px);
+    font-family: var(--mono);
+    font-size: clamp(6px, 0.6vw, 8px);
+    letter-spacing: 0.32em;
+    color: var(--ink-faint);
+  }
+
+  .hero__bottom {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: end;
+    gap: clamp(24px, 4vw, 70px);
+    padding-top: clamp(18px, 2.5vh, 32px);
+    border-top: 1px solid var(--line);
+  }
+
+  .hero__lead {
+    max-width: 30em;
+    font-family: var(--serif);
+    font-size: clamp(13px, 1.1vw, 16px);
+    line-height: 1.95;
+    letter-spacing: 0.04em;
+    color: var(--ink-dim);
+  }
+
+  .hero__actions {
+    display: flex;
+    align-items: center;
+    gap: clamp(18px, 2.5vw, 34px);
+    padding-bottom: 2px;
+  }
+
+  .hero__about-link {
+    color: var(--ink-dim);
+    font-family: var(--serif);
+    letter-spacing: 0.1em;
+  }
+
+  .hero__stamp-wrap {
+    display: flex;
+    align-items: center;
+    justify-self: end;
+    gap: 16px;
+  }
+
+  .hero__stamp {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 96px;
+    height: 96px;
+    color: var(--ink-dim);
+    transition: color 0.4s ease;
+  }
+
+  .hero__stamp:hover {
+    color: var(--ink);
+  }
+
+  .hero__stamp svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    animation: spin 28s linear infinite;
+  }
+
+  .hero__stamp-text {
+    font-family: var(--mono);
+    font-size: 7.2px;
+    letter-spacing: 0.18em;
+    fill: currentColor;
+  }
+
+  .hero__stamp-center {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border: 1px solid var(--line-strong);
+    border-radius: 50%;
+    color: var(--ink);
+    transition: background 0.4s ease, color 0.4s ease, transform 0.5s var(--ease);
+  }
+
+  .hero__stamp:hover .hero__stamp-center {
+    background: var(--ink);
+    color: var(--bg);
+    transform: translateY(3px);
+  }
+
+  .hero__scroll-label {
+    font-family: var(--mono);
+    font-size: 7px;
+    line-height: 1.8;
+    letter-spacing: 0.2em;
+    color: var(--ink-faint);
+  }
+
+  @media (max-width: 1200px) {
+    .hero__float--a {
+      top: 29%;
+      left: -28px;
+    }
+    .hero__float--b {
+      top: 21%;
+      right: -24px;
+    }
+    .hero__float--c {
+      right: 5%;
+    }
+  }
+
+  @media (max-width: 980px) {
+    .hero__float--a {
+      top: 24%;
+      width: 15vw;
+      opacity: 0.88;
+    }
+    .hero__float--b {
+      top: 59%;
+      width: 15vw;
+      opacity: 0.9;
+    }
+    .hero__float--c {
+      display: none;
+    }
+    .hero__bottom {
+      grid-template-columns: 1fr auto;
+    }
+    .hero__stamp-wrap {
+      display: none;
+    }
+    .hero__top-right {
+      display: none;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .hero__float {
+      display: none;
+    }
+    .hero__content {
+      padding-top: calc(var(--nav-h) + 20px);
+      padding-bottom: 26px;
+    }
+    .hero__main {
+      padding-block: 6vh;
+    }
+    .hero__title {
+      font-size: clamp(54px, 15.2vw, 110px);
+    }
+    .hero__subline {
+      margin-top: 12px;
+    }
+    .hero__jp {
+      max-width: 26em;
+      line-height: 1.8;
+      letter-spacing: 0.2em;
+    }
+    .hero__bottom {
+      grid-template-columns: 1fr;
+      align-items: start;
+      gap: 24px;
+    }
+    .hero__lead {
+      max-width: 100%;
+      font-size: 13px;
+    }
+    .hero__lead br {
+      display: none;
+    }
+    .hero__actions {
+      flex-wrap: wrap;
+      gap: 18px;
+    }
+    .hero__vertical {
+      display: none;
+    }
+    .hero__orbit {
+      width: 120vw;
+      opacity: 0.35;
+    }
+    .hero__grid {
+      height: 36vh;
+    }
+  }
+
+  @media (max-height: 720px) and (min-width: 721px) {
+    .hero__content {
+      padding-top: calc(var(--nav-h) + 10px);
+      padding-bottom: 20px;
+    }
+    .hero__main {
+      padding-block: 2vh;
+    }
+    .hero__jp {
+      margin-top: 12px;
+    }
+    .hero__bottom {
+      padding-top: 14px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero__aurora,
+    .hero__orbit-ring,
+    .hero__orbit-node,
+    .hero__card-wrap,
+    .hero__stamp svg {
+      animation: none !important;
+    }
+  }
+</style>

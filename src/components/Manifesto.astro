@@ -1,0 +1,210 @@
+---
+import Icon from './Icon.astro';
+---
+
+<section class="manifesto section--tight" aria-labelledby="manifesto-title">
+  <div class="container">
+    <div class="manifesto__grid">
+      <aside class="manifesto__aside">
+        <p class="eyebrow" data-reveal>OUR DIMENSION / 00</p>
+        <p class="manifesto__note" data-reveal style="--reveal-delay: .08s">
+          山东省济钢高级中学（全福校区） · 跨次元新星动漫社<br />
+          一个因热爱动画而相遇的学生创作社团
+        </p>
+        <a class="text-link" href="/about/" data-nav-link data-reveal style="--reveal-delay: .16s">
+          <span class="text-link__line">关于我们</span>
+          <Icon name="arrowUpRight" size={13} />
+        </a>
+      </aside>
+
+      <div class="manifesto__main">
+        <h2 class="manifesto__title" id="manifesto-title" data-reveal>
+          我们在画格之间，<br />
+          收集<span class="manifesto__italic">尚未命名</span>的次元。
+        </h2>
+
+        <div class="manifesto__lower">
+          <p class="manifesto__lead" data-reveal style="--reveal-delay: .1s">
+            从一幅画的空气感，到一篇小说的呼吸，再到一束穿过放映机的光。我们相信，喜欢本身就已经是一种创作——而作品，是它留下的回声。
+          </p>
+
+          <div class="manifesto__stats" data-reveal-group>
+            <div class="manifesto__stat">
+              <span class="manifesto__number">12<sup>+</sup></span>
+              <span class="manifesto__label">位同学<br />表达入社意愿</span>
+            </div>
+            <div class="manifesto__stat">
+              <span class="manifesto__number">03</span>
+              <span class="manifesto__label">创作方向<br />插画 / 小说 / 影像</span>
+            </div>
+            <div class="manifesto__stat">
+              <span class="manifesto__number manifesto__number--inf">∞</span>
+              <span class="manifesto__label">次元之间<br />想象的可能</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .manifesto {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .manifesto::after {
+    content: "✦";
+    position: absolute;
+    top: 6%;
+    right: 4%;
+    font-size: clamp(60px, 10vw, 150px);
+    line-height: 1;
+    color: rgba(243, 238, 227, 0.035);
+    transform: rotate(12deg);
+    pointer-events: none;
+  }
+
+  .manifesto__grid {
+    display: grid;
+    grid-template-columns: minmax(200px, 0.42fr) minmax(0, 1.58fr);
+    gap: clamp(40px, 8vw, 140px);
+    align-items: start;
+  }
+
+  .manifesto__aside {
+    display: grid;
+    align-content: start;
+    gap: 28px;
+    padding-top: 10px;
+  }
+
+  .manifesto__note {
+    font-size: 12px;
+    line-height: 2;
+    color: var(--ink-dim);
+  }
+
+  .manifesto__aside .text-link {
+    justify-self: start;
+  }
+
+  .manifesto__title {
+    font-family: var(--serif);
+    font-size: clamp(36px, 4.9vw, 78px);
+    font-weight: 400;
+    line-height: 1.28;
+    letter-spacing: -0.035em;
+  }
+
+  .manifesto__italic {
+    font-family: var(--display);
+    font-style: italic;
+    color: var(--accent);
+    letter-spacing: -0.01em;
+    padding-right: 0.08em;
+  }
+
+  .manifesto__lower {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    gap: clamp(40px, 7vw, 110px);
+    align-items: end;
+    margin-top: clamp(44px, 6vw, 90px);
+    padding-top: clamp(30px, 4vw, 54px);
+    border-top: 1px solid var(--line);
+  }
+
+  .manifesto__lead {
+    max-width: 34em;
+    font-size: 14px;
+    line-height: 2.1;
+    color: var(--ink-dim);
+  }
+
+  .manifesto__stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+  }
+
+  .manifesto__stat {
+    display: grid;
+    gap: 12px;
+    padding-left: 18px;
+    border-left: 1px solid var(--line);
+  }
+
+  .manifesto__number {
+    font-family: var(--display);
+    font-size: clamp(42px, 4.2vw, 68px);
+    font-style: italic;
+    font-weight: 400;
+    line-height: 0.9;
+    color: var(--ink);
+  }
+
+  .manifesto__number sup {
+    font-size: 0.38em;
+    color: var(--accent);
+    vertical-align: super;
+  }
+
+  .manifesto__number--inf {
+    color: var(--accent-warm);
+  }
+
+  .manifesto__label {
+    font-size: 10px;
+    line-height: 1.8;
+    letter-spacing: 0.05em;
+    color: var(--ink-dim);
+  }
+
+  @media (max-width: 1000px) {
+    .manifesto__grid {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+    .manifesto__aside {
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 18px;
+    }
+    .manifesto__aside .eyebrow {
+      grid-column: 1 / -1;
+    }
+    .manifesto__note {
+      font-size: 11px;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .manifesto__lower {
+      grid-template-columns: 1fr;
+      gap: 36px;
+    }
+    .manifesto__stats {
+      gap: 12px;
+    }
+    .manifesto__stat {
+      padding-left: 12px;
+    }
+    .manifesto__label {
+      font-size: 9px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .manifesto__aside {
+      grid-template-columns: 1fr;
+    }
+    .manifesto__stats {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .manifesto__number {
+      font-size: 38px;
+    }
+  }
+</style>
