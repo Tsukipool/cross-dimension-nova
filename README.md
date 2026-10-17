@@ -15,7 +15,7 @@
 - [粒子与动效架构](#粒子与动效架构)
 - [页面滚动与锚点定位](#页面滚动与锚点定位)
 - [SEO 与部署](#seo-与部署)
-- [dist 构建产物](#dist-构建产物)
+- [构建产物](#构建产物)
 - [Git 提交规范](#git-提交规范)
 - [维护检查清单](#维护检查清单)
 - [常见问题](#常见问题)
@@ -80,7 +80,7 @@ npm run art            # 重新生成 public/art 下的示例插画和静态星�
 │  └─ favicon.svg
 ├─ scripts/generate-art.mjs   # 生成示例 SVG 与 starfield.svg
 ├─ .github/workflows/deploy.yml # GitHub Pages 自动构建与部署
-├─ dist/                      # 构建产物（已纳入 Git，供直接部署）
+├─ dist/                      # 本地构建产物（已被 Git 忽略）
 ├─ astro.config.mjs
 └─ package.json
 ```
@@ -176,7 +176,7 @@ duration: "00:32"
 1. 替换 `src/content/works/`、`public/art/` 与 `public/media/`；
 2. 更新 `public/og.jpg`（建议 1200×630）；
 3. 检查社团名称、指导老师、招新信息；
-4. 重新构建并提交 `dist/`。
+4. 运行 `npm run build` 验证构建；提交源码即可，不要提交 `dist/`。
 
 **注意**：`npm run art` 会重新生成同名的示例 SVG，并覆盖 `public/art/` 中对应的文件。如果已经换成真实作品，不要再运行该命令，或先修改生成脚本的输出路径。
 
@@ -342,7 +342,7 @@ SITE_URL="https://user.github.io" BASE_PATH="/repo-name" npm run build
 
 因此项目站点 `https://<user>.github.io/<repo>/`、用户站点 `https://<user>.github.io/` 和自定义域名都不需要修改源码。若默认分支不是 `main`，请同步修改 `.github/workflows/deploy.yml` 的触发分支。
 
-GitHub Pages 由工作流重新构建 `dist`，**不会使用仓库中已提交的 `dist/`**。仓库里的 `dist/` 主要用于本地直接打开或部署到其他静态托管。
+GitHub Pages 工作流会在 CI 中执行 `npm run build` 并把生成的 `dist/` 作为 Artifact 上传部署。**只需要提交源码，不需要提交 `dist/`。**
 
 ### 静态部署
 
@@ -358,20 +358,20 @@ GitHub Pages 由工作流重新构建 `dist`，**不会使用仓库中已提交�
 
 `public/og.jpg` 需要单独维护，构建不会自动生成。替换时建议 1200×630，保留标题可读性。
 
-## dist 构建产物
+## 构建产物
 
-**`dist/` 已纳入 Git 版本控制**，用于直接部署或提供给不熟悉 Node 环境的使用者。
+`dist/` 是 `npm run build` 生成的本地产物，**已被 `.gitignore` 忽略，不应提交**。
 
-因此：
+- GitHub Pages 由 `.github/workflows/deploy.yml` 在 CI 中重新构建并上传 Artifact。
+- 本地构建用于预览、检查产物或手动部署到其他静态托管。
+- **不要手动编辑 `dist/`**，它会在下一次构建时被完整覆盖。
+- 需要验证 GitHub Pages 子路径效果时：
 
-1. 修改任何源码后，先运行 `npm run build`；
-2. 确认构建成功，并检查 `dist/` 中的关键页面；
-3. 将源码与 `dist/` 一起提交；
-4. **不要手动编辑 `dist/`**，它会在下一次构建时被覆盖。
+```bash
+SITE_URL="https://user.github.io" BASE_PATH="/repo-name" npm run build
+```
 
-注意：仓库内的 `dist/` 是按本地默认配置（根路径、fallback 域名）生成的；GitHub Pages 项目站点的子路径构建由 Action 单独完成，不要把仓库里的 `dist/` 直接上传到项目子路径。
-
-如果之后决定不在版本库中保存构建产物，可以从 `.gitignore` 恢复 `dist/` 并在 Git 中移除缓存，但本次维护约定是保留它。
+如果手动上传到其他静态托管，直接上传刚生成的 `dist/` 目录即可；不要把旧产物留在仓库中，也不要提交它。
 
 ## Git 提交规范
 
@@ -400,7 +400,7 @@ feat(works): add autumn exhibition entry
 fix(nav): align hash targets below fixed header
 perf(particles): reduce off-screen canvas work
 docs: update content maintenance guide
-chore(build): refresh dist output
+ci(pages): refresh deployment workflow
 ```
 
 提交前建议执行：
@@ -427,7 +427,7 @@ git commit -m "type(scope): subject"
 - [ ] `prefers-reduced-motion` 下无持续动画
 - [ ] 浏览器控制台无错误
 - [ ] 设置正式 `SITE_URL` 后重新构建
-- [ ] `dist/` 已更新并与源码一起提交
+- [ ] 若已推送，GitHub Pages 构建与部署成功
 
 项目目前没有自动化测试套件，以上人工检查是主要回归手段。
 
@@ -437,7 +437,7 @@ git commit -m "type(scope): subject"
 停止并重启开发服务器。若 Vite 依赖缓存异常，删除 `node_modules/.vite` 和 `.astro/` 后重新执行 `npm run dev`。
 
 **canonical / sitemap 还是 example.com？**
-说明构建时没有设置 `SITE_URL`。重新执行带正式域名的构建，并提交新的 `dist/`。
+说明构建时没有设置 `SITE_URL`。GitHub Pages 构建由 Action 自动注入；本地构建/手动部署时请重新执行带正式域名的构建。
 
 **顶部锚点又偏了？**
 检查是否新增了 `scroll-margin-top`，或给目标元素套了带 `transform` 的 reveal 容器。保持 `scroll-padding-top` 为唯一定位偏移来源。

@@ -1,3 +1,6 @@
+# build output (generated)
+dist/
+
 # Astro generated cache
 .astro/
 
